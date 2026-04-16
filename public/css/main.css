@@ -1,0 +1,147 @@
+/* Custom styles for UdyamKings */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom colors */
+:root {
+  --royal-blue: #0A2463;
+  --royal-blue-100: #D6E4FF;
+  --royal-blue-200: #ADC8FF;
+  --royal-blue-300: #84A9FF;
+  --royal-blue-400: #6690FF;
+  --royal-blue-500: #3366FF;
+  --royal-blue-600: #254EDB;
+  --royal-blue-700: #1A3DB7;
+  --royal-blue-800: #102D93;
+  --royal-blue-900: #0A2463;
+  --gold: #FFD700;
+  --gold-100: #FFF9C4;
+  --gold-200: #FFF176;
+  --gold-300: #FFEE58;
+  --gold-400: #FFEB3B;
+  --gold-500: #FFD700;
+  --gold-600: #FBC02D;
+  --gold-700: #F9A825;
+  --gold-800: #F57F17;
+  --gold-900: #F57C00;
+}
+
+/* Base styles */
+body {
+  @apply bg-white text-gray-800 font-sans leading-relaxed antialiased;
+  font-feature-settings: 'kern', 'liga', 'clig', 'calt';
+  text-rendering: optimizeLegibility;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading font-bold leading-tight tracking-tight;
+  margin-bottom: 1em;
+}
+
+h1 { @apply text-4xl md:text-5xl; }
+h2 { @apply text-3xl md:text-4xl; }
+h3 { @apply text-2xl md:text-3xl; }
+h4 { @apply text-xl md:text-2xl; }
+h5 { @apply text-lg md:text-xl; }
+h6 { @apply text-base font-semibold; }
+
+p {
+  @apply mb-4 leading-relaxed;
+}
+
+a {
+  @apply text-royal-blue-600 hover:text-royal-blue-800 transition-colors duration-200;
+}
+
+/* Buttons */
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-royal-blue-500;
+}
+
+.btn-primary {
+  @apply bg-royal-blue text-white hover:bg-royal-blue-700 focus:ring-royal-blue-500;
+}
+
+.btn-secondary {
+  @apply bg-white text-royal-blue border-2 border-royal-blue hover:bg-royal-blue-50 focus:ring-royal-blue-500;
+}
+
+.btn-gold {
+  @apply bg-gold-500 text-gray-900 hover:bg-gold-600 focus:ring-gold-500;
+}
+
+/* Forms */
+.input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-royal-blue-500 focus:border-transparent transition-all duration-200;
+}
+
+/* Navigation */
+.nav-link {
+  @apply px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200;
+}
+
+/* Cards */
+.card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg;
+}
+
+/* Hero section */
+.hero {
+  @apply py-16 md:py-24 lg:py-32 bg-gradient-to-r from-royal-blue-800 to-royal-blue-600 text-white;
+}
+
+/* Section padding */
+.section {
+  @apply py-16 md:py-24;
+}
+
+/* Container */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Utility classes */
+.rounded-full { border-radius: 9999px; }
+.shadow-lg { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-royal-blue-400 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-royal-blue-500;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.3;
+  }
+}

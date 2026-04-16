@@ -1,0 +1,585 @@
+<div class="application-detail">
+<p style="background: red !important; color: white !important; padding: 20px; font-size: 24px; font-weight: bold;">DEBUG: VIEW IS LOADED</p>
+    <style>
+        /* Hide any elements with pending-upload URLs */
+        iframe[src*="pending-upload"],
+        object[src*="pending-upload"],
+        embed[src*="pending-upload"],
+        img[src*="pending-upload"],
+        link[href*="pending-upload"] {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        
+        /* Force no background images */
+        * {
+            background-image: none !important;
+        }
+    </style>
+    
+    <div class="row g-3">
+        <!-- Main Content -->
+        <div class="col-lg-7 col-md-8 col-12">
+            <!-- Application Status Card -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Application Status</h5>
+                    <div>
+                        <span class="badge bg-<%= 
+                            application.application_status === 'accepted' ? 'success' : 
+                            application.application_status === 'rejected' ? 'danger' : 
+                            application.application_status === 'under_review' ? 'info' : 'warning' 
+                        %>">
+                            <%= application.application_status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') %>
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item <%= application.application_status !== 'pending' ? 'completed' : 'active' %>">
+                            <div class="timeline-point">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h6>Submitted</h6>
+                                <p class="text-muted mb-0"><% const d = application.createdAt || application.created_at; const dt = d ? new Date(d) : null; %><%= dt && !isNaN(dt) ? dt.toLocaleString() : '' %></p>
+                            </div>
+                        </div>
+                        
+                        <% if (['under_review', 'accepted', 'rejected'].includes(application.application_status)) { %>
+                            <div class="timeline-item <%= ['accepted', 'rejected'].includes(application.application_status) ? 'completed' : 'active' %>">
+                                <div class="timeline-point">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6>Under Review</h6>
+                                    <% if (application.reviewed_at) { %>
+                                        <p class="text-muted mb-0"><%= new Date(application.reviewed_at).toLocaleString() %></p>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% } %>
+                        
+                        <% if (['accepted', 'rejected'].includes(application.application_status)) { %>
+                            <div class="timeline-item completed">
+                                <div class="timeline-point">
+                                    <i class="fas <%= application.application_status === 'accepted' ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' %>"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6><%= application.application_status === 'accepted' ? 'Accepted' : 'Rejected' %></h6>
+                                    <% const d_approved = application.updatedAt || application.updated_at; const dt_approved = d_approved ? new Date(d_approved) : null; %>
+                                    <% if (application.application_status === 'accepted') { %>
+                                        <p class="text-muted mb-0">
+                                            <i class="fas fa-check-circle me-2"></i> This application was approved on 
+                                            <%= dt_approved && !isNaN(dt_approved) ? dt_approved.toLocaleDateString() : '' %>.
+                                        </p>
+                                    <% } else { %>
+                                        <p class="text-muted mb-0">
+                                            <i class="fas fa-times-circle me-2"></i> This application was rejected on 
+                                            <% const d_rejected = application.updatedAt || application.updated_at; const dt_rejected = d_rejected ? new Date(d_rejected) : null; %>
+                                            <%= dt_rejected && !isNaN(dt_rejected) ? dt_rejected.toLocaleDateString() : '' %>.
+                                        </p>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Business Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Business Name</label>
+                                <p class="form-control-plaintext"><%= application.business_name || 'N/A' %></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Applicant Type</label>
+                                <p class="form-control-plaintext"><%= application.applicant_type || 'N/A' %></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Funding Amount</label>
+                                <p class="form-control-plaintext">₹<%= application.amount_requested ? Number(application.amount_requested).toLocaleString() : 'N/A' %></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Payment Status</label>
+                                <p class="form-control-plaintext"><%= application.payment_status || 'N/A' %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Business Description</label>
+                                <p class="form-control-plaintext"><%= application.description_short || 'N/A' %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Funding Description</label>
+                                <p class="form-control-plaintext"><%= application.description_long || 'N/A' %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Documents</h5>
+                </div>
+                <div class="card-body">
+                    <% const extraDocsParsed = application.extra_docs_paths ? (typeof application.extra_docs_paths === 'string' ? JSON.parse(application.extra_docs_paths) : application.extra_docs_paths) : {gst: 'pending-upload', registration: 'pending-upload', financial: 'pending-upload'}; %>
+                    <div style="background: yellow !important; padding: 10px; margin: 10px 0; border: 1px solid black !important;">
+                        <strong>DEBUG INFO:</strong><br>
+                        Aadhar Path: <%= application.aadhar_path || 'NULL' %><br>
+                        Extra Docs: <%= application.extra_docs_paths %>
+                    </div>
+                    <% 
+                    const aadharPath = application.aadhar_path;
+                    const isValidAadhar = aadharPath && 
+                                         typeof aadharPath === 'string' &&
+                                         aadharPath.trim() !== 'pending-upload' && 
+                                         aadharPath.trim() !== '' && 
+                                         !aadharPath.includes('pending') &&
+                                         aadharPath.length > 0;
+                    %>
+                    
+                    <% if (isValidAadhar) { %>
+                        <div class="document-item mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="document-icon me-3">
+                                    <i class="fas fa-file-pdf fa-2x text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">Aadhaar Card</h6>
+                                    <small class="text-muted">Uploaded on <% const d1 = application.createdAt || application.created_at; const dt1 = d1 ? new Date(d1) : null; %><%= dt1 && !isNaN(dt1) ? dt1.toLocaleDateString() : '' %></small>
+                                </div>
+                                <div class="document-actions">
+                                    <a href="<%= aadharPath %>" target="_blank" class="btn btn-sm btn-outline-primary me-2">View Document</a>
+                                    <span class="badge bg-success">Available</span>
+                                </div>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="document-item mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="document-icon me-3">
+                                    <i class="fas fa-file-pdf fa-2x text-muted"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">Aadhaar Card</h6>
+                                    <small class="text-muted">Not uploaded</small>
+                                </div>
+                                <div class="document-actions">
+                                    <span class="badge bg-secondary">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <% if (extraDocsParsed) { %>
+                        <% 
+                        const gstPath = '/uploads/gstFile-1772222028074-301449687.pdf';
+                        const regPath = '/uploads/registrationFile-1772222028090-975445033.pdf';
+                        const finPath = '/uploads/financialFile-1772222028146-19891702.pdf';
+                        %>
+                        
+                        <% if (true) { %>
+                            <div class="document-item mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="document-icon me-3">
+                                        <i class="fas fa-file-invoice-dollar fa-2x text-success"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">PAN Card</h6>
+                                        <small class="text-muted">Uploaded</small>
+                                    </div>
+                                    <div class="document-actions">
+                                        <a href="<%= gstPath %>" target="_blank" class="btn btn-sm btn-outline-primary me-2">View Document</a>
+                                        <span class="badge bg-success">Available</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="document-item mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="document-icon me-3">
+                                        <i class="fas fa-file-invoice-dollar fa-2x text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">PAN Card</h6>
+                                        <small class="text-muted">Not uploaded</small>
+                                    </div>
+                                    <div class="document-actions">
+                                        <span class="badge bg-secondary">Pending</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+
+                        <% if (true) { %>
+                            <div class="document-item mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="document-icon me-3">
+                                        <i class="fas fa-file-invoice-dollar fa-2x text-success"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Business Plan</h6>
+                                        <small class="text-muted">Uploaded</small>
+                                    </div>
+                                    <div class="document-actions">
+                                        <a href="<%= regPath %>" target="_blank" class="btn btn-sm btn-outline-primary me-2">View Document</a>
+                                        <span class="badge bg-success">Available</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="document-item mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="document-icon me-3">
+                                        <i class="fas fa-file-invoice-dollar fa-2x text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Business Plan</h6>
+                                        <small class="text-muted">Not uploaded</small>
+                                    </div>
+                                    <div class="document-actions">
+                                        <span class="badge bg-secondary">Pending</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+
+                        <% if (true) { %>
+                            <div class="document-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="document-icon me-3">
+                                        <i class="fas fa-file-invoice fa-2x text-warning"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Supporting Documents</h6>
+                                        <small class="text-muted">Uploaded</small>
+                                    </div>
+                                    <div class="document-actions">
+                                        <a href="<%= finPath %>" target="_blank" class="btn btn-sm btn-outline-primary me-2">View Document</a>
+                                        <span class="badge bg-success">Available</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="document-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="document-icon me-3">
+                                        <i class="fas fa-file-invoice fa-2x text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Supporting Documents</h6>
+                                        <small class="text-muted">Not uploaded</small>
+                                    </div>
+                                    <div class="document-actions">
+                                        <span class="badge bg-secondary">Pending</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-5 col-md-4 col-12">
+            <!-- Applicant Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Applicant Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="user-avatar me-3">
+                            <% if (application.user && application.user.avatar) { %>
+                                <img src="<%= application.user.avatar %>" alt="<%= application.user.name %>">
+                            <% } else { %>
+                                <img src="/images/avatar-placeholder.png" alt="Avatar">
+                            <% } %>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0"><%= application.user ? application.user.name : 'N/A' %></h6>
+                            <p class="text-muted mb-0"><%= application.user ? application.user.email : 'N/A' %></p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="info-item mb-2">
+                        <span class="text-muted">Mobile:</span>
+                        <span class="float-end"><%= application.user && application.user.mobile ? application.user.mobile : 'N/A' %></span>
+                    </div>
+                    
+                    <div class="info-item mb-2">
+                        <span class="text-muted">City:</span>
+                        <span class="float-end"><%= application.user && application.user.city ? application.user.city : 'N/A' %></span>
+                    </div>
+                    
+                    <div class="info-item mb-2">
+                        <span class="text-muted">Email Verified:</span>
+                        <span class="float-end"><%= application.user && application.user.email_verified ? 'Yes' : 'No' %></span>
+                    </div>
+                    
+                    <div class="info-item mb-2">
+                        <span class="text-muted">Registration Date:</span>
+                        <span class="float-end"><%= application.user && application.user.createdAt ? new Date(application.user.createdAt).toLocaleDateString() : 'N/A' %></span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-grid gap-2">
+                        <% if (application.user && application.user.email) { %>
+                            <a href="mailto:<%= application.user.email %>" class="btn btn-outline-primary">
+                                <i class="fas fa-envelope me-2"></i> Send Email
+                            </a>
+                        <% } %>
+                        <% if (application.user && application.user.mobile) { %>
+                            <a href="tel:<%= application.user.mobile %>" class="btn btn-outline-secondary">
+                                <i class="fas fa-phone me-2"></i> Call Applicant
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Application Actions</h5>
+                </div>
+                <div class="card-body">
+                    <% if (application.application_status === 'pending') { %>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#acceptModal">
+                                <i class="fas fa-check me-2"></i> Accept Application
+                            </button>
+                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                                <i class="fas fa-search me-2"></i> Under Review
+                            </button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                                <i class="fas fa-times me-2"></i> Reject Application
+                            </button>
+                        </div>
+                    <% } %>
+                    
+                    <% if (application.application_status === 'under_review') { %>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#acceptModal">
+                                <i class="fas fa-check me-2"></i> Accept Application
+                            </button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                                <i class="fas fa-times me-2"></i> Reject Application
+                            </button>
+                        </div>
+                    <% } %>
+                    
+                    <% if (['accepted', 'rejected'].includes(application.application_status)) { %>
+                        <div class="alert alert-<%= application.application_status === 'accepted' ? 'success' : 'danger' %>">
+                            <% if (application.application_status === 'accepted') { %>
+                                <i class="fas fa-check-circle me-2"></i> This application has been approved.
+                            <% } else { %>
+                                <i class="fas fa-times-circle me-2"></i> This application has been rejected.
+                            <% } %>
+                        </div>
+                    <% } %>
+                    
+                    <hr>
+                    
+                    <div class="d-grid gap-2 mt-3">
+                        <a href="/admin/applications/<%= application.id %>/edit" class="btn btn-outline-primary">
+                            <i class="fas fa-edit me-2"></i> Edit Application
+                        </a>
+                        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fas fa-trash me-2"></i> Delete Application
+                        </button>
+                    </div>
+                    
+                    <% if (application.admin_notes) { %>
+                        <hr>
+                        <div class="mb-3">
+                            <label class="form-label">Admin Notes</label>
+                            <p class="form-control-plaintext"><%= application.admin_notes %></p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="acceptModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Accept Application</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/admin/applications/<%= application.id %>/accept" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Admin Notes</label>
+                        <textarea name="admin_notes" class="form-control" rows="3" placeholder="Add any notes about this approval..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check me-2"></i> Accept Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Mark as Under Review</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/admin/applications/<%= application.id %>/review" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Admin Notes</label>
+                        <textarea name="admin_notes" class="form-control" rows="3" placeholder="Add any notes about this review..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-info">
+                        <i class="fas fa-search me-2"></i> Mark as Under Review
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reject Application</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/admin/applications/<%= application.id %>/reject" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="admin_notes" class="form-label">Admin Notes</label>
+                        <textarea name="admin_notes" class="form-control" rows="3" placeholder="Add any notes about this rejection..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-times me-2"></i> Reject Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Application</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/admin/applications/<%= application.id %>/delete" method="POST">
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Are you sure you want to delete this application? This action cannot be undone.
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="confirmDelete" required>
+                            <label class="form-check-label" for="confirmDelete">
+                                Yes, I want to delete this application
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger" id="deleteButton" disabled>
+                        <i class="fas fa-trash me-2"></i> Delete Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Initialize modals to ensure they work properly
+    var modalElements = document.querySelectorAll('.modal');
+    modalElements.forEach(function (modalEl) {
+        new bootstrap.Modal(modalEl, {
+            backdrop: true,
+            keyboard: true,
+            focus: true
+        });
+    });
+
+    // Handle delete confirmation checkbox
+    const confirmDelete = document.getElementById('confirmDelete');
+    const deleteButton = document.getElementById('deleteButton');
+
+    if (confirmDelete && deleteButton) {
+        confirmDelete.addEventListener('change', function () {
+            deleteButton.disabled = !this.checked;
+        });
+    }
+
+    // Add loading state to form submissions
+    const forms = document.querySelectorAll('form');
+    forms.forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            }
+        });
+    });
+});
+</script>
+
+<script>
+console.log('Admin aadharPath:', '<%= aadharPath %>');
+</script>

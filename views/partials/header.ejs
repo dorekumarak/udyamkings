@@ -1,0 +1,124 @@
+<header class="navbar">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a href="/" class="nav-logo">
+      <span class="text-primary-600 font-bold" style="font-size: 2.16rem;">UdyamKings</span>
+      <span class="block" style="font-size: 0.945rem; color: #FFFFFF !important;">Turning Ambition Into Empires</span>
+    </a>
+
+    <!-- Mobile menu button -->
+    <button 
+      id="mobile-menu-button" 
+      style="padding: 0.5rem; background: none; border: none; cursor: pointer;"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Toggle navigation"
+    >
+      <svg style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    </button>
+
+    <!-- Desktop Navigation -->
+    <nav style="align-items: center; gap: 1.5rem;" aria-label="Main navigation">
+      <a href="/" class="nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/') ? 'active' : '' %>">Home</a>
+      <a href="/about" class="nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/about') ? 'active' : '' %>">About</a>
+      <a href="/how-it-works" class="nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/how-it-works') ? 'active' : '' %>">How It Works</a>
+      <a href="/contact" class="nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/contact') ? 'active' : '' %>">Contact</a>
+      
+      <% if (user) { %>
+        <% if (user.role === 'admin') { %>
+          <a href="/admin" class="nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/admin') ? 'active' : '' %>">Admin</a>
+        <% } %>
+        <a href="/dashboard" class="nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/dashboard') ? 'active' : '' %>">Dashboard</a>
+        <a href="/logout" class="btn btn-outline" style="margin-left: 1rem;">Logout</a>
+      <% } else { %>
+        <a href="/login" class="nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/login') ? 'active' : '' %>">Login</a>
+        <a href="/admin/login" class="nav-link">Admin Login</a>
+        <a href="/register" class="nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/register') ? 'active' : '' %>">Register</a>
+        <a href="/register" class="btn btn-primary" style="margin-left: 1rem;">Apply Now</a>
+      <% } %>
+    </nav>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div id="mobile-menu" class="hidden" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--primary); box-shadow: var(--shadow-lg);">
+    <div style="padding: 0.5rem 0;">
+      <a href="/" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">Home</a>
+      <a href="/about" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">About</a>
+      <a href="/how-it-works" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">How It Works</a>
+      <a href="/contact" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">Contact</a>
+      
+      <% if (user) { %>
+        <% if (user.role === 'admin') { %>
+          <a href="/admin" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">Admin</a>
+        <% } %>
+        <a href="/dashboard" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">Dashboard</a>
+        <a href="/logout" style="display: block; width: 100%; text-align: left; padding: 0.75rem 1rem; color: var(--white); background: var(--primary-dark); text-decoration: none; font-weight: 500;">Logout</a>
+      <% } else { %>
+        <a href="/login" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">Login</a>
+        <a href="/admin/login" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">Admin Login</a>
+        <a href="/register" style="display: block; padding: 0.75rem 1rem; color: #FFFFFF; text-decoration: none; font-weight: 500; transition: all 0.2s ease;" onmouseover="this.style.color='#FFD700'; this.style.background='rgba(255, 215, 0, 0.1)'" onmouseout="this.style.color='#FFFFFF'; this.style.background='none'">Register</a>
+        <a href="/register" style="display: block; width: 100%; text-align: left; padding: 0.75rem 1rem; color: var(--white); background: var(--accent); text-decoration: none; font-weight: 500;">Apply Now</a>
+      <% } %>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let isMenuOpen = false;
+
+    // Toggle mobile menu
+    function toggleMenu() {
+      isMenuOpen = !isMenuOpen;
+      mobileMenu.classList.toggle('hidden');
+      mobileMenuButton.setAttribute('aria-expanded', isMenuOpen);
+      
+      // Toggle between menu and close icon
+      const menuIcon = mobileMenuButton.querySelector('svg');
+      if (isMenuOpen) {
+        menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />';
+      } else {
+        menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />';
+      }
+    }
+
+    // Close menu when clicking outside
+    function handleClickOutside(event) {
+      if (isMenuOpen && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+        toggleMenu();
+      }
+    }
+
+    // Close menu when clicking on a link
+    function closeMenuOnLinkClick() {
+      if (isMenuOpen) {
+        toggleMenu();
+      }
+    }
+
+    // Add event listeners
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', toggleMenu);
+      
+      // Close menu when clicking on links
+      const menuLinks = mobileMenu.querySelectorAll('a');
+      menuLinks.forEach(link => {
+        link.addEventListener('click', closeMenuOnLinkClick);
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', handleClickOutside);
+      
+      // Close menu on escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && isMenuOpen) {
+          toggleMenu();
+        }
+      });
+    }
+  });
+</script>

@@ -1,0 +1,71 @@
+<aside class="w-64 bg-gray-800 text-white">
+    <div class="p-4">
+        <h2 class="text-xl font-bold">Admin Panel</h2>
+    </div>
+    
+    <nav class="mt-4">
+        <ul class="space-y-2">
+            <li>
+                <a href="/admin/dashboard" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white <%= typeof page !== 'undefined' && page === 'dashboard' ? 'bg-gray-700 text-white' : '' %>">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    Dashboard
+                </a>
+            </li>
+            
+            <li>
+                <a href="/admin/applicants" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white <%= typeof page !== 'undefined' && page === 'applicants' ? 'bg-gray-700 text-white' : '' %>">
+                    <i class="fas fa-users mr-3"></i>
+                    Applicants
+                </a>
+            </li>
+            
+            <li>
+                <a href="/admin/payments" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white <%= typeof page !== 'undefined' && page === 'payments' ? 'bg-gray-700 text-white' : '' %>">
+                    <i class="fas fa-credit-card mr-3"></i>
+                    Payments
+                </a>
+            </li>
+            
+            <li>
+                <a href="/admin/forms" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white <%= typeof page !== 'undefined' && page === 'forms' ? 'bg-gray-700 text-white' : '' %>">
+                    <i class="fas fa-wpforms mr-3"></i>
+                    Form Manager
+                </a>
+            </li>
+            
+            <li>
+                <a href="/admin/content" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white <%= typeof page !== 'undefined' && page === 'content' ? 'bg-gray-700 text-white' : '' %>">
+                    <i class="fas fa-edit mr-3"></i>
+                    Content Manager
+                </a>
+            </li>
+            
+            <li>
+                <a href="/admin/settings" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white <%= typeof page !== 'undefined' && page === 'settings' ? 'bg-gray-700 text-white' : '' %>">
+                    <i class="fas fa-cog mr-3"></i>
+                    Settings
+                </a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="absolute bottom-0 w-64 p-4 border-t border-gray-700">
+        <div class="text-sm text-gray-400">
+            <div class="mb-2">
+                <i class="fas fa-user-circle mr-2"></i>
+                <%= typeof admin !== 'undefined' ? admin.name : 'Admin' %>
+            </div>
+            <div>
+                <span class="px-2 py-1 text-xs rounded-full bg-indigo-600">
+                    <%= typeof admin !== 'undefined' ? admin.role : 'admin' %>
+                </span>
+            </div>
+            <div class="mt-3">
+                <a href="/admin/logout" class="text-red-400 hover:text-red-300">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</aside>

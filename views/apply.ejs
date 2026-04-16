@@ -1,0 +1,1147 @@
+<%- include('partials/header', { 
+    title: 'Apply for Funding | UdyamKings',
+    bodyClass: 'application-page',
+    hideHeader: true 
+}) %>
+
+<!-- Application Progress -->
+<div class="application-progress-bar">
+    <div class="container">
+        <div class="progress-steps">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Business Info</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Funding Details</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Documents</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Review & Submit</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Application Form -->
+<div class="application-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card application-card">
+                    <div class="card-header">
+                        <h2 class="mb-0">Funding Application</h2>
+                        <p class="text-muted mb-0">Complete the following steps to apply for funding</p>
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Step 1: Business Information -->
+                        <form id="applicationForm" class="needs-validation" novalidate>
+                            <!-- Step 1 -->
+                            <div class="application-step" id="step1">
+                                <div class="step-header mb-4">
+                                    <h4>Business Information</h4>
+                                    <p>Tell us about your business</p>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="businessName" class="form-label">Business Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="businessName" name="businessName" required>
+                                        <div class="invalid-feedback">Please enter your business name.</div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="businessType" class="form-label">Type of Business <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="businessType" name="businessType" required>
+                                            <option value="" selected disabled>Select business type</option>
+                                            <option value="sole_proprietorship">Sole Proprietorship</option>
+                                            <option value="partnership">Partnership</option>
+                                            <option value="llp">Limited Liability Partnership (LLP)</option>
+                                            <option value="pvt_ltd">Private Limited Company</option>
+                                            <option value="public_ltd">Public Limited Company</option>
+                                            <option value="one_person">One Person Company</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a business type.</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="industry" class="form-label">Industry <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="industry" name="industry" required>
+                                            <option value="" selected disabled>Select industry</option>
+                                            <option value="agriculture">Agriculture</option>
+                                            <option value="automotive">Automotive</option>
+                                            <option value="construction">Construction</option>
+                                            <option value="education">Education</option>
+                                            <option value="ecommerce">E-commerce</option>
+                                            <option value="fashion">Fashion & Apparel</option>
+                                            <option value="finance">Finance & Insurance</option>
+                                            <option value="food_beverage">Food & Beverage</option>
+                                            <option value="healthcare">Healthcare</option>
+                                            <option value="hospitality">Hospitality</option>
+                                            <option value="it_software">IT & Software</option>
+                                            <option value="manufacturing">Manufacturing</option>
+                                            <option value="real_estate">Real Estate</option>
+                                            <option value="retail">Retail</option>
+                                            <option value="technology">Technology</option>
+                                            <option value="transportation">Transportation & Logistics</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an industry.</div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="foundingDate" class="form-label">Year Established <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="foundingDate" name="foundingDate" min="1900" max="<%= new Date().getFullYear() %>" required>
+                                        <div class="invalid-feedback">Please enter a valid year.</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="businessDescription" class="form-label">Business Description <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="businessDescription" name="businessDescription" rows="4" required></textarea>
+                                    <div class="form-text">Briefly describe your business, products, and services.</div>
+                                    <div class="invalid-feedback">Please provide a business description.</div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="website" class="form-label">Website (if any)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">https://</span>
+                                            <input type="text" class="form-control" id="website" name="website" placeholder="yourbusiness.com">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="employees" class="form-label">Number of Employees <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="employees" name="employees" required>
+                                            <option value="" selected disabled>Select number of employees</option>
+                                            <option value="1">1 (Just Me)</option>
+                                            <option value="2-5">2-5</option>
+                                            <option value="6-10">6-10</option>
+                                            <option value="11-25">11-25</option>
+                                            <option value="26-50">26-50</option>
+                                            <option value="51-100">51-100</option>
+                                            <option value="101-250">101-250</option>
+                                            <option value="251-500">251-500</option>
+                                            <option value="501-1000">501-1,000</option>
+                                            <option value="1001-5000">1,001-5,000</option>
+                                            <option value="5001+">5,001+</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select the number of employees.</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn btn-primary next-step" data-next="2">Next: Funding Details <i class="fas fa-arrow-right ms-2"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2: Funding Details -->
+                            <div class="application-step d-none" id="step2">
+                                <div class="step-header mb-4">
+                                    <h4>Funding Details</h4>
+                                    <p>Tell us about your funding needs</p>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fundingAmount" class="form-label">Funding Amount (₹) <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">₹</span>
+                                            <input type="number" class="form-control" id="fundingAmount" name="fundingAmount" min="100000" step="10000" required>
+                                        </div>
+                                        <div class="form-text">Minimum amount: ₹1,00,000</div>
+                                        <div class="invalid-feedback">Please enter a valid amount (minimum ₹1,00,000).</div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fundingType" class="form-label">Type of Funding <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="fundingType" name="fundingType" required>
+                                            <option value="" selected disabled>Select funding type</option>
+                                            <option value="seed">Seed Funding</option>
+                                            <option value="series_a">Series A</option>
+                                            <option value="series_b">Series B</option>
+                                            <option value="series_c">Series C+</option>
+                                            <option value="debt">Debt Financing</option>
+                                            <option value="grant">Grant</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a funding type.</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">What will the funds be used for? <span class="text-danger">*</span></label>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useWorkingCapital" name="fundUse" value="working_capital">
+                                        <label class="form-check-label" for="useWorkingCapital">Working Capital</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useInventory" name="fundUse" value="inventory">
+                                        <label class="form-check-label" for="useInventory">Inventory Purchase</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useEquipment" name="fundUse" value="equipment">
+                                        <label class="form-check-label" for="useEquipment">Equipment Purchase</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useExpansion" name="fundUse" value="expansion">
+                                        <label class="form-check-label" for="useExpansion">Business Expansion</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useMarketing" name="fundUse" value="marketing">
+                                        <label class="form-check-label" for="useMarketing">Marketing & Sales</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useProduct" name="fundUse" value="product">
+                                        <label class="form-check-label" for="useProduct">Product Development</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useDebt" name="fundUse" value="debt_consolidation">
+                                        <label class="form-check-label" for="useDebt">Debt Consolidation</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="useOther" name="fundUse" value="other">
+                                        <label class="form-check-label" for="useOther">Other</label>
+                                    </div>
+                                    <div class="invalid-feedback">Please select at least one option.</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="fundingDescription" class="form-label">How will this funding help your business grow? <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="fundingDescription" name="fundingDescription" rows="4" required></textarea>
+                                    <div class="form-text">Please provide details on how you plan to use the funds and the expected impact on your business.</div>
+                                    <div class="invalid-feedback">Please provide a description of how you'll use the funds.</div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary prev-step" data-prev="1"><i class="fas fa-arrow-left me-2"></i> Back</button>
+                                    <button type="button" class="btn btn-primary next-step" data-next="3">Next: Documents <i class="fas fa-arrow-right ms-2"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 3: Documents -->
+                            <div class="application-step d-none" id="step3">
+                                <div class="step-header mb-4">
+                                    <h4>Required Documents</h4>
+                                    <p>Upload the necessary documents for your application</p>
+                                </div>
+                                
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Please ensure all documents are clear, legible, and in PDF, JPG, or PNG format (max 5MB each).
+                                </div>
+                                
+                                <div class="document-upload-list">
+                                    <!-- Business Plan -->
+                                    <div class="document-item card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="document-icon me-3">
+                                                    <i class="fas fa-file-pdf"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1">Business Plan <span class="text-danger">*</span></h6>
+                                                    <p class="small text-muted mb-0">Include executive summary, market analysis, financial projections, etc.</p>
+                                                </div>
+                                                <div class="document-actions">
+                                                    <input type="file" id="businessPlan" name="businessPlan" class="d-none" accept=".pdf,.doc,.docx" required>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm upload-btn" data-target="businessPlan">
+                                                        <i class="fas fa-upload me-1"></i> Upload
+                                                    </button>
+                                                    <div class="file-name small mt-1 text-muted">No file selected</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Financial Statements -->
+                                    <div class="document-item card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="document-icon me-3">
+                                                    <i class="fas fa-file-invoice-dollar"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1">Financial Statements <span class="text-danger">*</span></h6>
+                                                    <p class="small text-muted mb-0">Last 2 years of financial statements (P&L, Balance Sheet, Cash Flow)</p>
+                                                </div>
+                                                <div class="document-actions">
+                                                    <input type="file" id="financialStatements" name="financialStatements" class="d-none" accept=".pdf,.xls,.xlsx" multiple required>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm upload-btn" data-target="financialStatements">
+                                                        <i class="fas fa-upload me-1"></i> Upload
+                                                    </button>
+                                                    <div class="file-name small mt-1 text-muted">No files selected</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Bank Statements -->
+                                    <div class="document-item card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="document-icon me-3">
+                                                    <i class="fas fa-university"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1">Bank Statements <span class="text-danger">*</span></h6>
+                                                    <p class="small text-muted mb-0">Last 6 months of business bank statements</p>
+                                                </div>
+                                                <div class="document-actions">
+                                                    <input type="file" id="bankStatements" name="bankStatements" class="d-none" accept=".pdf,.jpg,.jpeg,.png" multiple required>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm upload-btn" data-target="bankStatements">
+                                                        <i class="fas fa-upload me-1"></i> Upload
+                                                    </button>
+                                                    <div class="file-name small mt-1 text-muted">No files selected</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- KYC Documents -->
+                                    <div class="document-item card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="document-icon me-3">
+                                                    <i class="fas fa-id-card"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1">KYC Documents <span class="text-danger">*</span></h6>
+                                                    <p class="small text-muted mb-0">PAN Card, Aadhaar Card, and Address Proof</p>
+                                                </div>
+                                                <div class="document-actions">
+                                                    <input type="file" id="kycDocuments" name="kycDocuments" class="d-none" accept=".pdf,.jpg,.jpeg,.png" multiple required>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm upload-btn" data-target="kycDocuments">
+                                                        <i class="fas fa-upload me-1"></i> Upload
+                                                    </button>
+                                                    <div class="file-name small mt-1 text-muted">No files selected</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Additional Documents -->
+                                    <div class="document-item card">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="document-icon me-3">
+                                                    <i class="fas fa-paperclip"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1">Additional Documents (Optional)</h6>
+                                                    <p class="small text-muted mb-0">Any other relevant documents (patents, certifications, etc.)</p>
+                                                </div>
+                                                <div class="document-actions">
+                                                    <input type="file" id="additionalDocuments" name="additionalDocuments" class="d-none" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" multiple>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm upload-btn" data-target="additionalDocuments">
+                                                        <i class="fas fa-upload me-1"></i> Upload
+                                                    </button>
+                                                    <div class="file-name small mt-1 text-muted">No files selected</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary prev-step" data-prev="2"><i class="fas fa-arrow-left me-2"></i> Back</button>
+                                    <button type="button" class="btn btn-primary next-step" data-next="4">Review & Submit <i class="fas fa-arrow-right ms-2"></i></button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 4: Review & Submit -->
+                            <div class="application-step d-none" id="step4">
+                                <div class="step-header mb-4">
+                                    <h4>Review & Submit</h4>
+                                    <p>Please review your application before submitting</p>
+                                </div>
+                                
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">Business Information</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Business Name</dt>
+                                            <dd class="col-sm-8" id="review-businessName">-</dd>
+                                            
+                                            <dt class="col-sm-4">Business Type</dt>
+                                            <dd class="col-sm-8" id="review-businessType">-</dd>
+                                            
+                                            <dt class="col-sm-4">Industry</dt>
+                                            <dd class="col-sm-8" id="review-industry">-</dd>
+                                            
+                                            <dt class="col-sm-4">Year Established</dt>
+                                            <dd class="col-sm-8" id="review-foundingDate">-</dd>
+                                            
+                                            <dt class="col-sm-4">Number of Employees</dt>
+                                            <dd class="col-sm-8" id="review-employees">-</dd>
+                                            
+                                            <dt class="col-sm-4">Business Description</dt>
+                                            <dd class="col-sm-8" id="review-businessDescription">-</dd>
+                                            
+                                            <dt class="col-sm-4">Website</dt>
+                                            <dd class="col-sm-8" id="review-website">-</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">Funding Details</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Funding Amount</dt>
+                                            <dd class="col-sm-8" id="review-fundingAmount">-</dd>
+                                            
+                                            <dt class="col-sm-4">Type of Funding</dt>
+                                            <dd class="col-sm-8" id="review-fundingType">-</dd>
+                                            
+                                            <dt class="col-sm-4">Funds Will Be Used For</dt>
+                                            <dd class="col-sm-8" id="review-fundUse">-</dd>
+                                            
+                                            <dt class="col-sm-4">Funding Purpose</dt>
+                                            <dd class="col-sm-8" id="review-fundingDescription">-</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-4">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">Documents</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush" id="review-documents">
+                                            <li class="list-group-item px-0">
+                                                <i class="far fa-file-pdf text-danger me-2"></i> Business Plan
+                                                <span class="badge bg-success ms-2">Uploaded</span>
+                                            </li>
+                                            <li class="list-group-item px-0">
+                                                <i class="far fa-file-excel text-success me-2"></i> Financial Statements (3 files)
+                                                <span class="badge bg-success ms-2">Uploaded</span>
+                                            </li>
+                                            <li class="list-group-item px-0">
+                                                <i class="far fa-file-pdf text-danger me-2"></i> Bank Statements (6 files)
+                                                <span class="badge bg-success ms-2">Uploaded</span>
+                                            </li>
+                                            <li class="list-group-item px-0">
+                                                <i class="far fa-file-image text-primary me-2"></i> KYC Documents (3 files)
+                                                <span class="badge bg-success ms-2">Uploaded</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="termsAgreement" required>
+                                    <label class="form-check-label" for="termsAgreement">
+                                        I certify that all information provided is accurate and complete to the best of my knowledge. 
+                                        I agree to the <a href="/terms" target="_blank">Terms of Service</a> and 
+                                        <a href="/privacy" target="_blank">Privacy Policy</a>.
+                                    </label>
+                                    <div class="invalid-feedback">You must agree to the terms before submitting.</div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary prev-step" data-prev="3"><i class="fas fa-arrow-left me-2"></i> Back</button>
+                                    <button type="submit" class="btn btn-success">
+                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                        <span class="btn-text">Submit Application</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Application Complete Modal -->
+<div class="modal fade" id="applicationCompleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-5">
+                <div class="success-animation mb-4">
+                    <div class="checkmark">
+                        <div class="check-icon">
+                            <span class="icon-line line-tip"></span>
+                            <span class="icon-line line-long"></span>
+                            <div class="icon-circle"></div>
+                            <div class="icon-fix"></div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="mb-3">Application Submitted Successfully!</h3>
+                <p class="text-muted mb-4">Your funding application has been received. We'll review your submission and get back to you within 5-7 business days.</p>
+                <div class="d-grid gap-2">
+                    <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form elements
+    const form = document.getElementById('applicationForm');
+    const steps = document.querySelectorAll('.application-step');
+    const progressSteps = document.querySelectorAll('.progress-steps .step');
+    
+    // Navigation buttons
+    const nextButtons = document.querySelectorAll('.next-step');
+    const prevButtons = document.querySelectorAll('.prev-step');
+    
+    // File upload handling
+    const uploadButtons = document.querySelectorAll('.upload-btn');
+    
+    // Current step
+    let currentStep = 1;
+    
+    // Initialize the form
+    initForm();
+    
+    // Initialize form and event listeners
+    function initForm() {
+        // Set current year as default for founding date
+        const currentYear = new Date().getFullYear();
+        document.getElementById('foundingDate').value = currentYear - 1;
+        
+        // Set default funding amount
+        document.getElementById('fundingAmount').value = 100000;
+        
+        // Add event listeners
+        addEventListeners();
+        
+        // Show the first step
+        showStep(1);
+    }
+    
+    // Add event listeners
+    function addEventListeners() {
+        // Next step buttons
+        nextButtons.forEach(button => {
+            button.addEventListener('click', handleNextStep);
+        });
+        
+        // Previous step buttons
+        prevButtons.forEach(button => {
+            button.addEventListener('click', handlePrevStep);
+        });
+        
+        // File upload buttons
+        uploadButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).click();
+            });
+        });
+        
+        // File input change events
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', handleFileSelect);
+        });
+        
+        // Form submission
+        form.addEventListener('submit', handleSubmit);
+    }
+    
+    // Handle next step
+    function handleNextStep(e) {
+        e.preventDefault();
+        
+        const nextStep = parseInt(this.getAttribute('data-next'));
+        const currentStepElement = document.getElementById(`step${currentStep}`);
+        
+        // Validate current step before proceeding
+        if (validateStep(currentStep)) {
+            // Update progress
+            updateProgress(nextStep);
+            
+            // If moving to review step, update the review section
+            if (nextStep === 4) {
+                updateReviewSection();
+            }
+            
+            // Show next step
+            showStep(nextStep);
+        }
+    }
+    
+    // Handle previous step
+    function handlePrevStep(e) {
+        e.preventDefault();
+        
+        const prevStep = parseInt(this.getAttribute('data-prev'));
+        
+        // Update progress
+        updateProgress(prevStep, false);
+        
+        // Show previous step
+        showStep(prevStep);
+    }
+    
+    // Validate current step
+    function validateStep(step) {
+        let isValid = true;
+        const currentStepElement = document.getElementById(`step${step}`);
+        
+        // Get all required fields in current step
+        const requiredFields = currentStepElement.querySelectorAll('[required]');
+        
+        // Check each required field
+        requiredFields.forEach(field => {
+            if (!field.value) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+            
+            // Add event listeners to remove invalid class when user starts typing
+            if (!field.hasAttribute('data-initialized')) {
+                field.addEventListener('input', function() {
+                    if (this.value) {
+                        this.classList.remove('is-invalid');
+                    }
+                });
+                field.setAttribute('data-initialized', 'true');
+            }
+        });
+        
+        // Special validation for checkboxes in step 2
+        if (step === 2) {
+            const checkboxes = currentStepElement.querySelectorAll('input[type="checkbox"][name="fundUse"]:checked');
+            if (checkboxes.length === 0) {
+                const checkboxGroup = document.querySelector('.form-check');
+                checkboxGroup.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                const checkboxGroup = document.querySelector('.form-check');
+                checkboxGroup.classList.remove('is-invalid');
+            }
+        }
+        
+        // If validation fails, show error message
+        if (!isValid) {
+            const firstInvalid = currentStepElement.querySelector('.is-invalid');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        return isValid;
+    }
+    
+    // Show step
+    function showStep(step) {
+        // Hide all steps
+        steps.forEach(stepEl => {
+            stepEl.classList.add('d-none');
+        });
+        
+        // Show current step
+        document.getElementById(`step${step}`).classList.remove('d-none');
+        
+        // Update current step
+        currentStep = step;
+    }
+    
+    // Update progress
+    function updateProgress(step, isForward = true) {
+        // Update progress steps
+        progressSteps.forEach((stepEl, index) => {
+            if (index + 1 < step) {
+                stepEl.classList.add('completed');
+                stepEl.classList.remove('active');
+            } else if (index + 1 === step) {
+                stepEl.classList.add('active');
+                stepEl.classList.remove('completed');
+            } else {
+                stepEl.classList.remove('active', 'completed');
+            }
+        });
+    }
+    
+    // Handle file selection
+    function handleFileSelect(e) {
+        const input = e.target;
+        const button = document.querySelector(`.upload-btn[data-target="${input.id}"]`);
+        const fileNameDisplay = button.nextElementSibling;
+        
+        if (input.files && input.files.length > 0) {
+            if (input.multiple) {
+                fileNameDisplay.textContent = `${input.files.length} files selected`;
+            } else {
+                fileNameDisplay.textContent = input.files[0].name;
+            }
+            
+            // Validate file size (max 5MB)
+            let isValid = true;
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            
+            for (let i = 0; i < input.files.length; i++) {
+                if (input.files[i].size > maxSize) {
+                    isValid = false;
+                    break;
+                }
+            }
+            
+            if (!isValid) {
+                fileNameDisplay.innerHTML = '<span class="text-danger">File too large (max 5MB)</span>';
+                input.value = '';
+            }
+        } else {
+            fileNameDisplay.textContent = 'No file selected';
+        }
+    }
+    
+    // Update review section
+    function updateReviewSection() {
+        // Business Information
+        document.getElementById('review-businessName').textContent = document.getElementById('businessName').value || '-';
+        document.getElementById('review-businessType').textContent = document.getElementById('businessType').options[document.getElementById('businessType').selectedIndex].text || '-';
+        document.getElementById('review-industry').textContent = document.getElementById('industry').options[document.getElementById('industry').selectedIndex].text || '-';
+        document.getElementById('review-foundingDate').textContent = document.getElementById('foundingDate').value || '-';
+        document.getElementById('review-employees').textContent = document.getElementById('employees').options[document.getElementById('employees').selectedIndex].text || '-';
+        document.getElementById('review-businessDescription').textContent = document.getElementById('businessDescription').value || '-';
+        
+        const website = document.getElementById('website').value;
+        document.getElementById('review-website').textContent = website ? `https://${website}` : '-';
+        
+        // Funding Details
+        document.getElementById('review-fundingAmount').textContent = '₹' + parseInt(document.getElementById('fundingAmount').value).toLocaleString('en-IN') || '-';
+        document.getElementById('review-fundingType').textContent = document.getElementById('fundingType').options[document.getElementById('fundingType').selectedIndex].text || '-';
+        
+        // Get selected fund uses
+        const selectedFundUses = [];
+        document.querySelectorAll('input[name="fundUse"]:checked').forEach(checkbox => {
+            selectedFundUses.push(checkbox.nextElementSibling.textContent.trim());
+        });
+        document.getElementById('review-fundUse').textContent = selectedFundUses.join(', ') || '-';
+        
+        document.getElementById('review-fundingDescription').textContent = document.getElementById('fundingDescription').value || '-';
+    }
+    
+    // Handle form submission
+    function handleSubmit(e) {
+        e.preventDefault();
+        
+        // Validate terms agreement
+        const termsCheckbox = document.getElementById('termsAgreement');
+        if (!termsCheckbox.checked) {
+            termsCheckbox.classList.add('is-invalid');
+            termsCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+        
+        // Show loading state
+        const submitButton = form.querySelector('button[type="submit"]');
+        const submitText = submitButton.querySelector('.btn-text');
+        const spinner = submitButton.querySelector('.spinner-border');
+        
+        submitButton.disabled = true;
+        submitText.textContent = 'Submitting...';
+        spinner.classList.remove('d-none');
+        
+        // Create FormData for file upload
+        const formData = new FormData(form);
+        
+        // Add all form fields
+        formData.append('business_name', document.getElementById('businessName').value);
+        formData.append('applicant_type', document.getElementById('businessType').value);
+        formData.append('description_short', document.getElementById('businessDescription').value);
+        formData.append('description_long', document.getElementById('fundingDescription').value);
+        formData.append('amount_requested', document.getElementById('fundingAmount').value);
+        formData.append('annual_revenue', '500000'); // Default value
+        formData.append('years_in_operation', '2'); // Default value
+        
+        // Add files
+        const aadharFile = document.getElementById('kycDocuments').files[0];
+        if (aadharFile) {
+            formData.append('aadhar', aadharFile);
+        }
+        
+        const extraFiles = document.getElementById('additionalDocuments').files;
+        for (let i = 0; i < extraFiles.length; i++) {
+            formData.append('extra_docs', extraFiles[i]);
+        }
+        
+        // Submit application via AJAX
+        fetch('/apply', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Reset button state
+            submitButton.disabled = false;
+            submitText.textContent = 'Submit Application';
+            spinner.classList.add('d-none');
+            
+            if (data.success) {
+                // Show success modal
+                const successModal = new bootstrap.Modal(document.getElementById('applicationCompleteModal'));
+                successModal.show();
+                
+                // Reset form after modal is shown
+                document.getElementById('applicationCompleteModal').addEventListener('hidden.bs.modal', function () {
+                    form.reset();
+                    currentStep = 1;
+                    showStep(1);
+                    updateProgress(1);
+                    
+                    // Reset file names
+                    document.querySelectorAll('.file-name').forEach(el => {
+                        el.textContent = 'No file selected';
+                    });
+                    
+                    // Reset progress steps
+                    progressSteps.forEach((step, index) => {
+                        if (index === 0) {
+                            step.classList.add('active');
+                        } else {
+                            step.classList.remove('active', 'completed');
+                        }
+                    });
+                });
+            } else {
+                // Show error message
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            
+            // Reset button state
+            submitButton.disabled = false;
+            submitText.textContent = 'Submit Application';
+            spinner.classList.add('d-none');
+            
+            alert('Error submitting application. Please try again.');
+        });
+    }
+});
+</script>
+
+<style>
+/* Application Progress Bar */
+.application-progress-bar {
+    background-color: #f8f9fa;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.progress-steps::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: #e9ecef;
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+}
+
+.step:not(:last-child) {
+    margin-right: 10px;
+}
+
+.step-number {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    border: 3px solid #fff;
+    position: relative;
+}
+
+.step.active .step-number {
+    background-color: var(--primary);
+    color: white;
+}
+
+.step.completed .step-number {
+    background-color: var(--success);
+    color: white;
+}
+
+.step.completed .step-number::after {
+    content: '✓';
+    font-size: 1rem;
+}
+
+.step-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6c757d;
+    text-align: center;
+}
+
+.step.active .step-label {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.step.completed .step-label {
+    color: var(--success);
+}
+
+/* Application Container */
+.application-container {
+    padding: 3rem 0;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 200px);
+}
+
+.application-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.application-card .card-header {
+    background-color: white;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem 2rem;
+}
+
+.application-card .card-body {
+    padding: 2rem;
+}
+
+/* Step Header */
+.step-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.step-header h4 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.step-header p {
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* Document Upload */
+.document-upload-list {
+    margin-top: 1.5rem;
+}
+
+.document-item {
+    border: 1px dashed #dee2e6;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.document-item:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+}
+
+.document-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: rgba(10, 36, 99, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.25rem;
+}
+
+.upload-btn {
+    min-width: 100px;
+}
+
+/* Review Section */
+#step4 dl {
+    margin-bottom: 0;
+}
+
+#step4 dt {
+    font-weight: 500;
+    padding: 0.75rem 0;
+    border-bottom: 1px dashed #e9ecef;
+}
+
+#step4 dd {
+    padding: 0.75rem 0;
+    border-bottom: 1px dashed #e9ecef;
+    margin-bottom: 0;
+}
+
+/* Success Animation */
+.success-animation {
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+}
+
+.checkmark {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 4;
+    stroke: #4bb71b;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #4bb71b;
+    animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+    position: relative;
+    top: 5px;
+    right: 5px;
+    margin: 0 auto;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 4;
+    stroke-miterlimit: 10;
+    stroke: #4bb71b;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px #fff;
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 767.98px) {
+    .application-progress-bar {
+        padding: 1rem 0;
+        overflow-x: auto;
+    }
+    
+    .progress-steps {
+        min-width: 600px;
+        padding: 0 1rem;
+    }
+    
+    .application-card .card-body {
+        padding: 1.5rem;
+    }
+    
+    .document-actions {
+        margin-top: 1rem;
+        width: 100%;
+    }
+    
+    .document-actions .btn {
+        width: 100%;
+    }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .application-container,
+    .application-progress-bar {
+        background-color: #1a1a1a;
+    }
+    
+    .application-card,
+    .application-card .card-header {
+        background-color: #2d2d2d;
+        color: #e0e0e0;
+    }
+    
+    .progress-steps::before {
+        background-color: #3d3d3d;
+    }
+    
+    .step-number {
+        background-color: #3d3d3d;
+        border-color: #2d2d2d;
+    }
+    
+    .step-label {
+        color: #a0a0a0;
+    }
+    
+    .document-item {
+        border-color: #3d3d3d;
+        background-color: #2d2d2d;
+    }
+    
+    .document-icon {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    #step4 dt,
+    #step4 dd {
+        border-color: #3d3d3d;
+    }
+}
+</style>

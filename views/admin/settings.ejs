@@ -1,0 +1,463 @@
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h2>System Settings</h2>
+        <p class="text-muted">Configure application settings and manage admin users</p>
+    </div>
+    <div class="col-md-6 text-end">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-primary" onclick="showBackupModal()">
+                <i class="fas fa-download me-1"></i> Backup Database
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adminUserModal">
+                <i class="fas fa-user-plus me-1"></i> Add Admin
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Settings Tabs -->
+<ul class="nav nav-tabs mb-4" id="settingsTabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#general">
+            General
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#payment">
+            Payment
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#email">
+            Email
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#security">
+            Security
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#admins">
+            Admin Users
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#manage-settings">
+            Manage Settings
+        </a>
+    </li>
+</ul>
+
+<!-- Tab Content -->
+<div class="tab-content" id="settingsTabContent">
+    <!-- General Settings -->
+    <div class="tab-pane fade show active" id="general">
+        <div class="card">
+            <div class="card-header">
+                <h5>General Settings</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Application Fee (₹)</label>
+                            <input type="number" class="form-control" id="application_fee" 
+                                   data-key="application_fee" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Min Loan Amount (₹)</label>
+                            <input type="number" class="form-control" id="min_loan_amount" 
+                                   data-key="min_loan_amount" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Max Loan Amount (₹)</label>
+                            <input type="number" class="form-control" id="max_loan_amount" 
+                                   data-key="max_loan_amount" onchange="updateSetting(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Interest Rate (%)</label>
+                            <input type="number" class="form-control" id="interest_rate" 
+                                   data-key="interest_rate" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Processing Time (days)</label>
+                            <input type="number" class="form-control" id="processing_time" 
+                                   data-key="processing_time" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Maintenance Mode</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="maintenance_mode" 
+                                       data-key="maintenance_mode" onchange="updateSetting(this)">
+                                <label class="form-check-label" for="maintenance_mode">
+                                    Enable Maintenance Mode
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Settings -->
+    <div class="tab-pane fade" id="payment">
+        <div class="card">
+            <div class="card-header">
+                <h5>Payment Gateway Settings</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Razorpay Key ID</label>
+                            <input type="text" class="form-control" id="razorpay_key_id" 
+                                   data-key="razorpay_key_id" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Razorpay Secret Key</label>
+                            <input type="password" class="form-control" id="razorpay_secret" 
+                                   data-key="razorpay_key_secret" onchange="updateSetting(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Payment Timeout (minutes)</label>
+                            <input type="number" class="form-control" id="payment_timeout" 
+                                   data-key="payment_timeout" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Auto Refund (days)</label>
+                            <input type="number" class="form-control" id="auto_refund_days" 
+                                   data-key="auto_refund_days" onchange="updateSetting(this)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Settings -->
+    <div class="tab-pane fade" id="email">
+        <div class="card">
+            <div class="card-header">
+                <h5>Email Configuration</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">SMTP Host</label>
+                            <input type="text" class="form-control" id="smtp_host" 
+                                   data-key="smtp_host" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">SMTP Port</label>
+                            <input type="number" class="form-control" id="smtp_port" 
+                                   data-key="smtp_port" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">SMTP Username</label>
+                            <input type="text" class="form-control" id="smtp_username" 
+                                   data-key="smtp_username" onchange="updateSetting(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">SMTP Password</label>
+                            <input type="password" class="form-control" id="smtp_password" 
+                                   data-key="smtp_password" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">From Email</label>
+                            <input type="email" class="form-control" id="from_email" 
+                                   data-key="from_email" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">From Name</label>
+                            <input type="text" class="form-control" id="from_name" 
+                                   data-key="from_name" onchange="updateSetting(this)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="tab-pane fade" id="security">
+        <div class="card">
+            <div class="card-header">
+                <h5>Security Settings</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="mb-3 text-primary">🔐 Change Password</h6>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="changeAdminPassword()">
+                            <i class="fas fa-key me-2"></i>Change Password
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>Password Requirements</h6>
+                            <ul class="mb-0 small">
+                                <li>Minimum 8 characters</li>
+                                <li>Include uppercase & lowercase letters</li>
+                                <li>Include at least one number</li>
+                                <li>Include special characters (!@#$%^&*)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <h6 class="mb-3 text-primary">⚙️ Security Settings</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Session Timeout (minutes)</label>
+                            <input type="number" class="form-control" id="session_timeout" 
+                                   data-key="session_timeout" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Max Login Attempts</label>
+                            <input type="number" class="form-control" id="max_login_attempts" 
+                                   data-key="max_login_attempts" onchange="updateSetting(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Lockout Duration (minutes)</label>
+                            <input type="number" class="form-control" id="lockout_duration" 
+                                   data-key="lockout_duration" onchange="updateSetting(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password Min Length</label>
+                            <input type="number" class="form-control" id="password_min_length" 
+                                   data-key="password_min_length" onchange="updateSetting(this)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Users -->
+    <div class="tab-pane fade" id="admins">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Admin Users</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#adminUserModal">
+                    <i class="fas fa-plus me-1"></i> Add Admin
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="adminUsersTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUsersTableBody">
+                            <!-- Admin users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backups -->
+    <div class="tab-pane fade" id="backups">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Database Backups</h5>
+                <button type="button" class="btn btn-primary btn-sm" onclick="showBackupModal()">
+                    <i class="fas fa-download me-1"></i> Create Backup
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="backupsTable">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Size</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="backupsTableBody">
+                            <!-- Backups will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Settings -->
+    <div class="tab-pane fade" id="manage-settings">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>All Settings</h5>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settingModal">
+                    <i class="fas fa-plus me-1"></i> Add Setting
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="settingsTable">
+                        <thead>
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="settingsTableBody">
+                            <!-- Settings will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Admin User Modal -->
+<div class="modal fade" id="adminUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminUserModalTitle">Add Admin User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="adminUserForm">
+                    <input type="hidden" id="adminUserId">
+                    
+                    <div class="mb-3">
+                        <label for="adminName" class="form-label">Name *</label>
+                        <input type="text" class="form-control" id="adminName" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="adminEmail" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="adminEmail" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="adminPassword" class="form-label">Password *</label>
+                        <input type="password" class="form-control" id="adminPassword" required>
+                        <small class="form-text text-muted">Leave blank to keep current password</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveAdminUserBtn">Save User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Backup Modal -->
+<div class="modal fade" id="backupModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Database Backup</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to create a database backup?</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="includeFiles" checked>
+                    <label class="form-check-label" for="includeFiles">
+                        Include uploaded files
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="createBackupBtn">
+                    <i class="fas fa-download me-1"></i> Create Backup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Setting Modal -->
+<div class="modal fade" id="settingModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="settingModalTitle">Add Setting</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="settingForm">
+                    <input type="hidden" id="settingId">
+
+                    <div class="mb-3">
+                        <label for="settingKey" class="form-label">Setting Key *</label>
+                        <input type="text" class="form-control" id="settingKey" required>
+                        <small class="form-text text-muted">Unique identifier for this setting</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="settingValue" class="form-label">Value *</label>
+                        <textarea class="form-control" id="settingValue" rows="3" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="settingType" class="form-label">Type</label>
+                        <select class="form-select" id="settingType">
+                            <option value="string">String</option>
+                            <option value="number">Number</option>
+                            <option value="boolean">Boolean</option>
+                            <option value="json">JSON</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="settingDescription" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="settingDescription">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveSettingBtn">Save Setting</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-settings.js"></script>

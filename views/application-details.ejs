@@ -1,0 +1,212 @@
+<%- include('partials/header', { 
+    title: 'DEBUG PAGE TITLE | UdyamKings',
+    bodyClass: 'application-details-page'
+}) %>
+
+<!-- DEBUG VIEW LOADED -->
+<p style="background: red !important; color: white !important; padding: 20px; font-size: 24px; font-weight: bold;">DEBUG: VIEW IS LOADED</p>
+
+<!-- Application Details Page -->
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Application Details</h4>
+                    <a href="/applications" class="btn btn-outline-primary">Back to Applications</a>
+                </div>
+                <div class="card-body">
+                    <!-- Debug Information -->
+                    <div class="alert alert-info mb-4">
+                        <strong>Debug Information:</strong><br>
+                        Application ID: <%= application.id %><br>
+                        Aadhar Path: <%= application.aadhar_path || 'null' %><br>
+                        Extra Docs Paths: <%= application.extra_docs_paths || 'null' %>
+                    </div>
+
+                    <!-- Application Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Application Information</h5>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Application ID:</strong></td>
+                                    <td><%= application.id %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Business Name:</strong></td>
+                                    <td><%= application.business_name %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Applicant Type:</strong></td>
+                                    <td><%= application.applicant_type %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Amount Requested:</strong></td>
+                                    <td>₹<%= application.amount_requested.toLocaleString('en-IN') %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Application Status:</strong></td>
+                                    <td>
+                                        <span class="badge bg-<%= application.application_status === 'approved' ? 'success' : application.application_status === 'rejected' ? 'danger' : application.application_status === 'pending' ? 'warning' : 'secondary' %>">
+                                            <%= application.application_status %>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Status:</strong></td>
+                                    <td>
+                                        <span class="badge bg-<%= application.payment_status === 'paid' ? 'success' : application.payment_status === 'pending' ? 'warning' : 'danger' %>">
+                                            <%= application.payment_status %>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Created Date:</strong></td>
+                                    <td><%= new Date(application.created_at).toLocaleDateString() %></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Business Description</h5>
+                            <p><%= application.description_short %></p>
+                            <% if (application.description_long) { %>
+                                <h6>Detailed Plan</h6>
+                                <p><%= application.description_long %></p>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <!-- Documents Section -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Uploaded Documents</h5>
+                            
+                            <!-- Debug Info -->
+                            <div style="background: yellow !important; padding: 10px; margin: 10px 0; border: 1px solid black !important;">
+                                <strong>DEBUG INFO:</strong><br>
+                                Aadhar Path: <%= application.aadhar_path || 'NULL' %><br>
+                                Extra Docs: <%= application.extra_docs_paths ? JSON.stringify(application.extra_docs_paths) : 'NULL' %>
+                            </div>
+                            <div class="row g-3">
+                                <!-- Aadhar Card -->
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-id-card fa-2x text-primary mb-2"></i>
+                                            <h6>Aadhaar Card</h6>
+                                            <% if (application.aadhar_path && application.aadhar_path !== 'pending-upload') { %>
+                                                <a href="<%= application.aadhar_path %>" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye me-1"></i> View Document
+                                                </a>
+                                            <% } else { %>
+                                                <span class="text-muted">NOT UPLOADED - VIEW UPDATED</span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- GST Certificate -->
+                                <% if (application.extra_docs_paths) { %>
+                                    <% const extraDocs = typeof application.extra_docs_paths === 'string' ? JSON.parse(application.extra_docs_paths) : application.extra_docs_paths; %>
+                                    <% if (extraDocs.gst_certificate) { %>
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="card h-100">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-file-invoice fa-2x text-success mb-2"></i>
+                                                    <h6>PAN Card</h6>
+                                                    <a href="<%= extraDocs.gst_certificate %>" target="_blank" class="btn btn-sm btn-outline-success">
+                                                        <i class="fas fa-eye me-1"></i> View Document
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+
+                                    <!-- Business Registration -->
+                                    <% if (extraDocs.business_registration) { %>
+                                        <div class="col-md-6 col-lg-4">
+                                            <div class="card h-100">
+                                                <div class="card-body text-center">
+                                                    <i class="fas fa-building fa-2x text-info mb-2"></i>
+                                                    <h6>Business Plan</h6>
+                                                    <a href="<%= extraDocs.business_registration %>" target="_blank" class="btn btn-sm btn-outline-info">
+                                                        <i class="fas fa-eye me-1"></i> View Document
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } %>
+
+                                    <!-- Financial Documents -->
+                                    <% if (extraDocs.financial_documents && Array.isArray(extraDocs.financial_documents)) { %>
+                                        <% extraDocs.financial_documents.forEach((doc, index) => { %>
+                                            <div class="col-md-6 col-lg-4">
+                                                <div class="card h-100">
+                                                    <div class="card-body text-center">
+                                                        <i class="fas fa-chart-line fa-2x text-warning mb-2"></i>
+                                                        <h6>Supporting Document <%= index + 1 %></h6>
+                                                        <a href="<%= doc %>" target="_blank" class="btn btn-sm btn-outline-warning">
+                                                            <i class="fas fa-eye me-1"></i> View Document
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% }); %>
+                                    <% } %>
+                                <% } %>
+                            </div>
+
+                            <% if ((!application.aadhar_path || application.aadhar_path === 'pending-upload') &&
+                                   (!application.extra_docs_paths ||
+                                    (typeof application.extra_docs_paths === 'string' && !JSON.parse(application.extra_docs_paths || '{}').gst_certificate &&
+                                     !JSON.parse(application.extra_docs_paths || '{}').business_registration &&
+                                     !JSON.parse(application.extra_docs_paths || '{}').financial_documents))) { %>
+                                <div class="text-center py-4">
+                                    <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                                    <p class="text-muted">No documents have been uploaded for this application.</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<style>
+.application-details-page {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.table th {
+    font-weight: 600;
+    color: #6c757d;
+    border: none;
+    padding: 0.5rem 0;
+}
+
+.table td {
+    border: none;
+    padding: 0.5rem 0;
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+</style>

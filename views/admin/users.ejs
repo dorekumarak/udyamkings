@@ -1,0 +1,51 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Registered Users</h2>
+    <span class="text-muted small">Total: <%= users.length %></span>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Email Verified</th>
+              <th scope="col">Mobile</th>
+              <th scope="col">City</th>
+              <th scope="col">Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (users && users.length > 0) { %>
+              <% users.forEach(function(u) { %>
+                <tr>
+                  <td><%= u.id %></td>
+                  <td><%= u.name %></td>
+                  <td><%= u.email %></td>
+                  <td>
+                    <% if (u.email_verified) { %>
+                      <span class="badge bg-success">Verified</span>
+                    <% } else { %>
+                      <span class="badge bg-secondary">Pending</span>
+                    <% } %>
+                  </td>
+                  <td><%= u.mobile || '-' %></td>
+                  <td><%= u.city || '-' %></td>
+                  <td><%= u.createdAt ? u.createdAt.toLocaleString() : '' %></td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center py-4 text-muted">No users found.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

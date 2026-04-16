@@ -1,0 +1,129 @@
+<div class="application-edit">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Edit Application #<%= application.id %></h5>
+                    <a href="/admin/applications/<%= application.id %>" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Application
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/applications/<%= application.id %>/update" method="POST">
+                        
+                        <!-- Application Status -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="application_status" class="form-label">Application Status</label>
+                                <select class="form-select" id="application_status" name="application_status" required>
+                                    <option value="pending" <%= application.application_status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                    <option value="under_review" <%= application.application_status === 'under_review' ? 'selected' : '' %>>Under Review</option>
+                                    <option value="accepted" <%= application.application_status === 'accepted' ? 'selected' : '' %>>Accepted</option>
+                                    <option value="rejected" <%= application.application_status === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="payment_status" class="form-label">Payment Status</label>
+                                <select class="form-select" id="payment_status" name="payment_status">
+                                    <option value="pending" <%= application.payment_status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                    <option value="paid" <%= application.payment_status === 'paid' ? 'selected' : '' %>>Paid</option>
+                                    <option value="failed" <%= application.payment_status === 'failed' ? 'selected' : '' %>>Failed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Business Information -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="business_name" class="form-label">Business Name</label>
+                                <input type="text" class="form-control" id="business_name" name="business_name" 
+                                       value="<%= application.business_name || '' %>" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="applicant_type" class="form-label">Applicant Type</label>
+                                <select class="form-select" id="applicant_type" name="applicant_type" required>
+                                    <option value="fresh_startup" <%= application.applicant_type === 'fresh_startup' ? 'selected' : '' %>>Startup / New Business</option>
+                                    <option value="existing_business" <%= application.applicant_type === 'existing_business' ? 'selected' : '' %>>Existing Business Expansion</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Funding Information -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="amount_requested" class="form-label">Amount Requested (₹)</label>
+                                <input type="number" class="form-control" id="amount_requested" name="amount_requested" 
+                                       value="<%= application.amount_requested || '' %>" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="preferred_contact_time" class="form-label">Preferred Contact Time</label>
+                                <input type="text" class="form-control" id="preferred_contact_time" name="preferred_contact_time" 
+                                       value="<%= application.preferred_contact_time || '' %>">
+                            </div>
+                        </div>
+
+                        <!-- Descriptions -->
+                        <div class="mb-3">
+                            <label for="description_short" class="form-label">Short Description</label>
+                            <textarea class="form-control" id="description_short" name="description_short" rows="3" required><%= application.description_short || '' %></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description_long" class="form-label">Detailed Business Plan</label>
+                            <textarea class="form-control" id="description_long" name="description_long" rows="5" required><%= application.description_long || '' %></textarea>
+                        </div>
+
+                        <!-- Existing Business Fields (shown only for existing business) -->
+                        <div id="existingBusinessFields" style="display: <%= application.applicant_type === 'existing_business' ? 'block' : 'none' %>;">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="annual_revenue" class="form-label">Annual Revenue (₹)</label>
+                                    <input type="number" class="form-control" id="annual_revenue" name="annual_revenue" 
+                                           value="<%= application.annual_revenue || '' %>">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="years_in_operation" class="form-label">Years in Operation</label>
+                                    <input type="number" class="form-control" id="years_in_operation" name="years_in_operation" 
+                                           value="<%= application.years_in_operation || '' %>">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Admin Notes -->
+                        <div class="mb-3">
+                            <label for="admin_notes" class="form-label">Admin Notes</label>
+                            <textarea class="form-control" id="admin_notes" name="admin_notes" rows="3"><%= application.admin_notes || '' %></textarea>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between">
+                            <a href="/admin/applications/<%= application.id %>" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i> Cancel
+                            </a>
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i> Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const applicantTypeSelect = document.getElementById('applicant_type');
+    const existingBusinessFields = document.getElementById('existingBusinessFields');
+    
+    applicantTypeSelect.addEventListener('change', function() {
+        if (this.value === 'existing_business') {
+            existingBusinessFields.style.display = 'block';
+        } else {
+            existingBusinessFields.style.display = 'none';
+        }
+    });
+});
+</script>

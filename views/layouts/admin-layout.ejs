@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/fontawesome/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="/css/admin.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/css/admin.css" as="style">
+    <link rel="preload" href="/js/admin.js" as="script">
+</head>
+<body class="admin">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>UdyamKings</h2>
+                <p>Admin Panel</p>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="<%= page === 'dashboard' ? 'active' : '' %>">
+                        <a href="/admin">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="<%= page === 'applications' ? 'active' : '' %>">
+                        <a href="/admin/applications">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Applications</span>
+                        </a>
+                    </li>
+                    <li class="<%= page === 'payments' ? 'active' : '' %>">
+                        <a href="/admin/payments">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Payments</span>
+                        </a>
+                    </li>
+                    <li class="<%= page === 'form-fields' ? 'active' : '' %>">
+                        <a href="/admin/form-fields">
+                            <i class="fas fa-form"></i>
+                            <span>Form Fields</span>
+                        </a>
+                    </li>
+                    <li class="<%= page === 'content' ? 'active' : '' %>">
+                        <a href="/admin/content">
+                            <i class="fas fa-edit"></i>
+                            <span>Content</span>
+                        </a>
+                    </li>
+                    <li class="<%= page === 'email-templates' ? 'active' : '' %>">
+                        <a href="/admin/email-templates">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email Templates</span>
+                        </a>
+                    </li>
+                    <li class="<%= page === 'settings' ? 'active' : '' %>">
+                        <a href="/admin/settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="<%= page === 'users' ? 'active' : '' %>">
+                        <a href="/admin/users">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="/admin/logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Dashboard' %></h1>
+                </div>
+                <div class="nav-right">
+                    <div class="admin-profile">
+                        <div class="admin-info">
+                            <span class="admin-name">Admin User</span>
+                            <span class="admin-role">Administrator</span>
+                        </div>
+                        <div class="admin-avatar">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="content-wrapper">
+                <!-- Flash Messages -->
+                <% if (typeof success_msg !== 'undefined' && (Array.isArray(success_msg) ? success_msg.length > 0 : success_msg)) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%= Array.isArray(success_msg) ? success_msg.join(', ') : success_msg %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                
+                <% if (typeof error_msg !== 'undefined' && (Array.isArray(error_msg) ? error_msg.length > 0 : error_msg)) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= Array.isArray(error_msg) ? error_msg.join(', ') : error_msg %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+                
+                <% if (typeof error !== 'undefined' && (Array.isArray(error) ? error.length > 0 : error)) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= Array.isArray(error) ? error.join(', ') : error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
+
+                <%- body %>
+            </div>
+
+            <!-- Footer -->
+            <footer class="admin-footer">
+                <div class="container">
+                    <p>&copy; <%= new Date().getFullYear() %> UdyamKings Admin Panel. All Rights Reserved.</p>
+                    <p class="version">v1.0.0</p>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Bootstrap JS (includes Popper) -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Admin JS -->
+    <script src="/js/admin.js"></script>
+    
+    <% if (typeof scripts !== 'undefined') { %>
+        <% scripts.forEach(function(script) { %>
+            <script src="<%= script %>"></script>
+        <% }); %>
+    <% } %>
+</body>
+</html>

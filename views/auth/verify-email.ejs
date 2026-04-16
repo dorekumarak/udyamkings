@@ -1,0 +1,61 @@
+<%- include('../layouts/main-layout', { title: 'Verify Email | UdyamKings' }) %>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm mt-5">
+        <div class="card-body p-4">
+          <h2 class="text-center mb-3">Verify Your Email</h2>
+          <p class="text-center text-muted mb-4">
+            We've sent a 6-digit verification code to your email. Enter it below to activate your account.
+          </p>
+
+          <% if (messages.error_msg && messages.error_msg.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <%= messages.error_msg.join(', ') %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <% if (messages.success_msg && messages.success_msg.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <%= messages.success_msg.join(', ') %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <form action="/verify-email" method="POST" class="mt-3">
+            <div class="mb-3">
+              <label for="otp" class="form-label">Verification Code</label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                id="otp"
+                name="otp"
+                placeholder="Enter 6-digit code"
+                required
+              >
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary btn-lg">Verify Email</button>
+            </div>
+          </form>
+
+          <div class="text-center mt-3">
+            <p class="small text-muted mb-1">Didn't receive the code?</p>
+            <form action="/resend-email-otp" method="POST">
+              <button type="submit" class="btn btn-link p-0 small">Resend code</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <p class="text-muted small">© <%= new Date().getFullYear() %> UdyamKings. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>
