@@ -1,9 +1,0 @@
-{
-  "name": "UdyamKings",
-  "short_name": "UdyamKings",
-  "description": "Empowering Entrepreneurs with Funding and Support",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a365d"
-}
