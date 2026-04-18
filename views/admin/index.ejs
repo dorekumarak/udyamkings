@@ -1,0 +1,1594 @@
+<%- include('../../partials/header', { 
+    title: 'Admin Dashboard | UdyamKings',
+    bodyClass: 'admin-dashboard',
+    hideHeader: true,
+    admin: true
+}) %>
+
+<!-- Admin Dashboard Layout -->
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <a href="/admin" class="logo">
+                <img src="/images/logo-white.png" alt="UdyamKings" class="img-fluid">
+                <span class="admin-badge">Admin</span>
+            </a>
+            <button class="sidebar-toggle d-lg-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <img src="<%= admin.avatar || '/images/avatar-placeholder.png' %>" alt="<%= admin.name %>">
+                <span class="status-indicator bg-success"></span>
+            </div>
+            <div class="user-info">
+                <h6 class="user-name"><%= admin.name %></h6>
+                <span class="user-role">Super Admin</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="/admin" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="nav-section">
+                    <span class="section-title">Applications</span>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/applications" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        <span>All Applications</span>
+                        <% if (counts.pendingApplications > 0) { %>
+                            <span class="badge bg-warning rounded-pill ms-auto"><%= counts.pendingApplications %></span>
+                        <% } %>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/applications/pending" class="nav-link">
+                        <i class="fas fa-clock"></i>
+                        <span>Pending Review</span>
+                        <% if (counts.pendingApplications > 0) { %>
+                            <span class="badge bg-warning rounded-pill ms-auto"><%= counts.pendingApplications %></span>
+                        <% } %>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/applications/approved" class="nav-link">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Approved</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/applications/rejected" class="nav-link">
+                        <i class="fas fa-times-circle"></i>
+                        <span>Rejected</span>
+                    </a>
+                </li>
+                
+                <li class="nav-section">
+                    <span class="section-title">Users</span>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/users" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>All Users</span>
+                        <span class="badge bg-primary rounded-pill ms-auto"><%= counts.totalUsers %></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/users/entrepreneurs" class="nav-link">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Entrepreneurs</span>
+                        <span class="badge bg-primary rounded-pill ms-auto"><%= counts.entrepreneurs %></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/users/investors" class="nav-link">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <span>Investors</span>
+                        <span class="badge bg-primary rounded-pill ms-auto"><%= counts.investors %></span>
+                    </a>
+                </li>
+                
+                <li class="nav-section">
+                    <span class="section-title">Investments</span>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/investments" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>All Investments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/investments/pending" class="nav-link">
+                        <i class="fas fa-pause-circle"></i>
+                        <span>Pending</span>
+                        <% if (counts.pendingInvestments > 0) { %>
+                            <span class="badge bg-warning rounded-pill ms-auto"><%= counts.pendingInvestments %></span>
+                        <% } %>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/investments/active" class="nav-link">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Active</span>
+                    </a>
+                </li>
+                
+                <li class="nav-section">
+                    <span class="section-title">Content</span>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/pages" class="nav-link">
+                        <i class="far fa-file-alt"></i>
+                        <span>Pages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/blog" class="nav-link">
+                        <i class="fas fa-blog"></i>
+                        <span>Blog</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/testimonials" class="nav-link">
+                        <i class="fas fa-quote-left"></i>
+                        <span>Testimonials</span>
+                    </a>
+                </li>
+                
+                <li class="nav-section">
+                    <span class="section-title">Settings</span>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/settings" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>General Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/email-templates" class="nav-link">
+                        <i class="far fa-envelope"></i>
+                        <span>Email Templates</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/activity-logs" class="nav-link">
+                        <i class="fas fa-history"></i>
+                        <span>Activity Logs</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="/admin/profile" class="btn btn-outline-light btn-sm mb-2 w-100">
+                <i class="fas fa-user-edit me-1"></i> Edit Profile
+            </a>
+            <a href="/admin/logout" class="btn btn-outline-light btn-sm w-100">
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </a>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="admin-content">
+        <!-- Top Navigation -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="sidebar-toggle d-lg-none me-3">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">Dashboard</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Search...">
+                </div>
+                
+                <div class="notifications dropdown">
+                    <button class="btn btn-icon" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <% if (counts.unreadNotifications > 0) { %>
+                            <span class="badge bg-danger"><%= counts.unreadNotifications %></span>
+                        <% } %>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-notifications" aria-labelledby="notificationsDropdown">
+                        <div class="dropdown-header">
+                            <h6>Notifications</h6>
+                            <a href="/admin/notifications" class="text-primary">View All</a>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="notifications-list">
+                            <% if (notifications && notifications.length > 0) { %>
+                                <% notifications.forEach(notification => { %>
+                                    <a href="<%= notification.link || '#' %>" class="dropdown-item <%= notification.unread ? 'unread' : '' %>">
+                                        <div class="notification-icon">
+                                            <i class="<%= notification.icon || 'fas fa-bell' %>"></i>
+                                        </div>
+                                        <div class="notification-content">
+                                            <p class="mb-0"><%= notification.message %></p>
+                                            <small class="text-muted"><%= notification.timeAgo %></small>
+                                        </div>
+                                        <% if (notification.unread) { %>
+                                            <span class="unread-dot"></span>
+                                        <% } %>
+                                    </a>
+                                <% }); %>
+                            <% } else { %>
+                                <div class="text-center py-3">
+                                    <i class="far fa-bell-slash fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted mb-0">No new notifications</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-dropdown dropdown">
+                    <button class="btn btn-user" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<%= admin.avatar || '/images/avatar-placeholder.png' %>" alt="<%= admin.name %>" class="user-avatar-sm">
+                        <span class="d-none d-md-inline"><%= admin.name.split(' ')[0] %></span>
+                        <i class="fas fa-chevron-down ms-1 d-none d-md-inline"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="/admin/profile"><i class="fas fa-user me-2"></i> My Profile</a></li>
+                        <li><a class="dropdown-item" href="/admin/settings"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/admin/logout"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Dashboard Content -->
+        <div class="container-fluid py-4">
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-primary">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= counts.totalApplications %></h3>
+                            <p>Total Applications</p>
+                        </div>
+                        <div class="stat-trend text-success">
+                            <i class="fas fa-arrow-up"></i> 12%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= counts.pendingApplications %></h3>
+                            <p>Pending Review</p>
+                        </div>
+                        <div class="stat-trend text-danger">
+                            <i class="fas fa-arrow-up"></i> 5%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= counts.approvedApplications %></h3>
+                            <p>Approved</p>
+                        </div>
+                        <div class="stat-trend text-success">
+                            <i class="fas fa-arrow-up"></i> 8%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-danger">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= counts.rejectedApplications %></h3>
+                            <p>Rejected</p>
+                        </div>
+                        <div class="stat-trend text-success">
+                            <i class="fas fa-arrow-down"></i> 3%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-info">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3><%= counts.totalUsers %></h3>
+                            <p>Total Users</p>
+                        </div>
+                        <div class="stat-trend text-success">
+                            <i class="fas fa-arrow-up"></i> 15%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-purple">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>₹<%= counts.totalInvestments.toLocaleString('en-IN') %></h3>
+                            <p>Total Investments</p>
+                        </div>
+                        <div class="stat-trend text-success">
+                            <i class="fas fa-arrow-up"></i> 22%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Recent Applications -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Recent Applications</h5>
+                            <a href="/admin/applications" class="btn btn-sm btn-outline-primary">View All</a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Business</th>
+                                            <th>Type</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if (recentApplications && recentApplications.length > 0) { %>
+                                            <% recentApplications.forEach(application => { %>
+                                                <tr>
+                                                    <td>#<%= application.id %></td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-shrink-0 me-2">
+                                                                <img src="<%= application.logo || '/images/default-business.png' %>" alt="<%= application.businessName %>" class="rounded-circle" width="32" height="32">
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="mb-0"><%= application.businessName %></h6>
+                                                                <small class="text-muted"><%= application.industry %></small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><span class="badge bg-light text-dark"><%= application.type %></span></td>
+                                                    <td>₹<%= application.amount.toLocaleString('en-IN') %></td>
+                                                    <td>
+                                                        <span class="badge bg-<%= getStatusBadgeClass(application.status) %>">
+                                                            <%= application.status %>
+                                                        </span>
+                                                    </td>
+                                                    <td><%= new Date(application.date).toLocaleDateString() %></td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sm btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <li><a class="dropdown-item" href="/admin/applications/<%= application.id %>"><i class="far fa-eye me-2"></i> View</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="far fa-edit me-2"></i> Edit</a></li>
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li><a class="dropdown-item text-danger" href="#"><i class="far fa-trash-alt me-2"></i> Delete</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="7" class="text-center py-4">
+                                                    <div class="text-muted">
+                                                        <i class="far fa-folder-open fa-2x mb-2"></i>
+                                                        <p class="mb-0">No applications found</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Revenue & Growth -->
+                    <div class="card mt-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Revenue & Growth</h5>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    This Year
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item active" href="#">This Year</a></li>
+                                    <li><a class="dropdown-item" href="#">Last Year</a></li>
+                                    <li><a class="dropdown-item" href="#">Last 6 Months</a></li>
+                                    <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Recent Activity</h5>
+                            <a href="/admin/activity-logs" class="btn btn-sm btn-link">View All</a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="activity-feed">
+                                <% if (recentActivities && recentActivities.length > 0) { %>
+                                    <% recentActivities.forEach(activity => { %>
+                                        <div class="activity-item">
+                                            <div class="activity-icon bg-<%= activity.type === 'login' ? 'primary' : activity.type === 'application' ? 'success' : activity.type === 'user' ? 'info' : 'warning' %>">
+                                                <i class="<%= activity.icon || 'fas fa-bell' %>"></i>
+                                            </div>
+                                            <div class="activity-content">
+                                                <p class="mb-1"><%= activity.message %></p>
+                                                <small class="text-muted"><i class="far fa-clock me-1"></i> <%= activity.timeAgo %></small>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                <% } else { %>
+                                    <div class="text-center py-4">
+                                        <div class="text-muted">
+                                            <i class="far fa-bell-slash fa-2x mb-2"></i>
+                                            <p class="mb-0">No recent activity</p>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Quick Stats</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-stats">
+                                <div class="stat-item">
+                                    <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div class="stat-details">
+                                        <h6>New Entrepreneurs</h6>
+                                        <h4><%= stats.newEntrepreneurs %></h4>
+                                        <span class="text-success"><i class="fas fa-arrow-up"></i> 12% from last month</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon bg-success bg-opacity-10 text-success">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                    </div>
+                                    <div class="stat-details">
+                                        <h6>New Investors</h6>
+                                        <h4><%= stats.newInvestors %></h4>
+                                        <span class="text-success"><i class="fas fa-arrow-up"></i> 8% from last month</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon bg-info bg-opacity-10 text-info">
+                                        <i class="fas fa-rupee-sign"></i>
+                                    </div>
+                                    <div class="stat-details">
+                                        <h6>Avg. Investment</h6>
+                                        <h4>₹<%= stats.avgInvestment.toLocaleString('en-IN') %></h4>
+                                        <span class="text-danger"><i class="fas fa-arrow-down"></i> 3% from last month</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                                        <i class="fas fa-chart-pie"></i>
+                                    </div>
+                                    <div class="stat-details">
+                                        <h6>Success Rate</h6>
+                                        <h4><%= stats.successRate %>%</h4>
+                                        <span class="text-success"><i class="fas fa-arrow-up"></i> 5% from last month</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Sectors -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Top Sectors</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="sector-chart-container" style="position: relative; height: 200px;">
+                                <canvas id="sectorChart"></canvas>
+                            </div>
+                            
+                            <div class="sector-legend mt-3">
+                                <% const colors = ['#0d6efd', '#198754', '#fd7e14', '#dc3545', '#6f42c1', '#20c997', '#ffc107', '#0dcaf0', '#6610f2', '#6c757d'] %>
+                                <% stats.topSectors.forEach((sector, index) => { %>
+                                    <div class="sector-item">
+                                        <div class="sector-color" style="background-color: <%= colors[index % colors.length] %>"></div>
+                                        <div class="sector-name"><%= sector.name %></div>
+                                        <div class="sector-percentage"><%= sector.percentage %>%</div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Transactions -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Recent Transactions</h5>
+                            <a href="/admin/transactions" class="btn btn-sm btn-outline-primary">View All</a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Transaction ID</th>
+                                            <th>Investor</th>
+                                            <th>Startup</th>
+                                            <th>Amount</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if (recentTransactions && recentTransactions.length > 0) { %>
+                                            <% recentTransactions.forEach(transaction => { %>
+                                                <tr>
+                                                    <td>#<%= transaction.id %></td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-shrink-0 me-2">
+                                                                <img src="<%= transaction.investor.avatar || '/images/avatar-placeholder.png' %>" alt="<%= transaction.investor.name %>" class="rounded-circle" width="32" height="32">
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="mb-0"><%= transaction.investor.name %></h6>
+                                                                <small class="text-muted"><%= transaction.investor.email %></small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="flex-shrink-0 me-2">
+                                                                <img src="<%= transaction.startup.logo || '/images/default-business.png' %>" alt="<%= transaction.startup.name %>" class="rounded-circle" width="32" height="32">
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <h6 class="mb-0"><%= transaction.startup.name %></h6>
+                                                                <small class="text-muted"><%= transaction.startup.industry %></small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>₹<%= transaction.amount.toLocaleString('en-IN') %></td>
+                                                    <td>
+                                                        <span class="badge bg-light text-dark"><%= transaction.type %></span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-<%= transaction.status === 'completed' ? 'success' : transaction.status === 'pending' ? 'warning' : 'danger' %>">
+                                                            <%= transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1) %>
+                                                        </span>
+                                                    </td>
+                                                    <td><%= new Date(transaction.date).toLocaleDateString() %></td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sm btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <li><a class="dropdown-item" href="/admin/transactions/<%= transaction.id %>"><i class="far fa-eye me-2"></i> View</a></li>
+                                                                <li><a class="dropdown-item" href="#"><i class="far fa-edit me-2"></i> Edit</a></li>
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li><a class="dropdown-item text-danger" href="#"><i class="far fa-trash-alt me-2"></i> Delete</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="8" class="text-center py-4">
+                                                    <div class="text-muted">
+                                                        <i class="far fa-folder-open fa-2x mb-2"></i>
+                                                        <p class="mb-0">No transactions found</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include('../../partials/footer') %>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Helper function to get status badge class
+function getStatusBadgeClass(status) {
+    const statusMap = {
+        'pending': 'warning',
+        'in_review': 'info',
+        'approved': 'success',
+        'rejected': 'danger',
+        'funded': 'primary',
+        'completed': 'success',
+        'cancelled': 'secondary'
+    };
+    return statusMap[status] || 'secondary';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle sidebar on mobile
+    const sidebarToggles = document.querySelectorAll('.sidebar-toggle');
+    const sidebar = document.querySelector('.admin-sidebar');
+    
+    sidebarToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-collapsed');
+        });
+    });
+    
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth < 992 && !e.target.closest('.admin-sidebar') && !e.target.closest('.sidebar-toggle')) {
+            document.body.classList.remove('sidebar-collapsed');
+        }
+    });
+    
+    // Prevent dropdown from closing when clicking inside
+    document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
+        dropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+    
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Revenue Chart
+    const revenueCtx = document.getElementById('revenueChart');
+    if (revenueCtx) {
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [12000, 19000, 15000, 25000, 22000, 30000, 28000, 32000, 35000, 40000, 38000, 45000],
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }, {
+                    label: 'Investments',
+                    data: [8000, 12000, 10000, 15000, 18000, 22000, 25000, 28000, 30000, 35000, 40000, 42000],
+                    borderColor: '#198754',
+                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ₹' + context.raw.toLocaleString('en-IN');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '₹' + value.toLocaleString('en-IN');
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Sector Chart
+    const sectorCtx = document.getElementById('sectorChart');
+    if (sectorCtx) {
+        const sectorChart = new Chart(sectorCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Technology', 'Healthcare', 'E-commerce', 'Finance', 
+                    'Education', 'Manufacturing', 'Retail', 'Other'
+                ],
+                datasets: [{
+                    data: [25, 18, 15, 12, 10, 8, 7, 5],
+                    backgroundColor: [
+                        '#0d6efd', '#198754', '#fd7e14', '#dc3545', 
+                        '#6f42c1', '#20c997', '#ffc107', '#6c757d'
+                    ],
+                    borderWidth: 0,
+                    cutout: '70%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Search functionality
+    const searchInput = document.querySelector('.search-box input');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query) {
+                    window.location.href = `/admin/search?q=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+    }
+});
+</script>
+
+<style>
+/* Admin Layout */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    width: 260px;
+    background: var(--primary);
+    color: white;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header .logo {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.sidebar-header .logo img {
+    max-height: 30px;
+    margin-right: 10px;
+}
+
+.admin-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.15rem 0.5rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    margin-left: 8px;
+    font-weight: 500;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    display: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-user {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.status-indicator {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    bottom: 0;
+    right: 0;
+}
+
+.user-info h6 {
+    margin-bottom: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.user-role {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+}
+
+.nav-section {
+    padding: 0.75rem 1.5rem 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+}
+
+.nav-item {
+    margin-bottom: 0.25rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+    font-weight: 500;
+    font-size: 0.9rem;
+    position: relative;
+    text-decoration: none;
+}
+
+.nav-link:hover, 
+.nav-link.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link i {
+    width: 24px;
+    margin-right: 10px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.nav-link .badge {
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+}
+
+.sidebar-footer {
+    padding: 1.25rem 1.5rem;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Main Content */
+.admin-content {
+    flex: 1;
+    margin-left: 260px;
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+/* Admin Header */
+.admin-header {
+    background: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0;
+    color: #2c3e50;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Search Box */
+.search-box {
+    position: relative;
+    margin-right: 1rem;
+}
+
+.search-box i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.search-box input {
+    padding-left: 36px;
+    border-radius: 50px;
+    border: 1px solid #dee2e6;
+    width: 220px;
+    height: 38px;
+    font-size: 0.875rem;
+}
+
+.search-box input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+}
+
+/* Notifications */
+.notifications {
+    position: relative;
+    margin-right: 0.75rem;
+}
+
+.notifications .btn-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #495057;
+    position: relative;
+    background: none;
+    border: none;
+    transition: all 0.2s;
+}
+
+.notifications .btn-icon:hover {
+    background: #f1f3f5;
+}
+
+.notifications .badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 0.6rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+}
+
+.dropdown-notifications {
+    width: 320px;
+    padding: 0;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.dropdown-notifications .dropdown-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-notifications .dropdown-header h6 {
+    margin-bottom: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.dropdown-notifications .dropdown-header a {
+    font-size: 0.8125rem;
+}
+
+.notifications-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.notifications-list .dropdown-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f8f9fa;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.notifications-list .dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notifications-list .dropdown-item.unread {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.notification-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+    font-size: 0.9375rem;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-content p {
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #212529;
+}
+
+.notification-content small {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.unread-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+/* User Dropdown */
+.user-dropdown .btn-user {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 50px;
+    transition: all 0.2s;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.user-dropdown .btn-user:hover {
+    background: #f1f3f5;
+}
+
+.user-avatar-sm {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    object-fit: cover;
+    border: 2px solid #e9ecef;
+}
+
+/* Stats Cards */
+.stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.stat-info h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+}
+
+.stat-info p {
+    margin-bottom: 0.5rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.stat-trend {
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: auto;
+}
+
+/* Quick Stats */
+.quick-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+}
+
+.stat-item:hover {
+    background-color: #f1f3f5;
+}
+
+.stat-item .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    margin-bottom: 0;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.stat-item .stat-details h6 {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.stat-item .stat-details h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+}
+
+.stat-item .stat-details span {
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+}
+
+.stat-item .stat-details i {
+    margin-right: 0.25rem;
+    font-size: 0.6rem;
+}
+
+/* Activity Feed */
+.activity-feed {
+    padding: 0.5rem 0;
+}
+
+.activity-item {
+    display: flex;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #f1f3f5;
+    transition: all 0.2s;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-item:hover {
+    background-color: #f8f9fa;
+}
+
+.activity-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-content p {
+    margin-bottom: 0.25rem;
+    color: #2c3e50;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.activity-content small {
+    color: #6c757d;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.activity-content small i {
+    margin-right: 0.25rem;
+    font-size: 0.7rem;
+}
+
+/* Sector Chart */
+.sector-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.sector-item {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.sector-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 6px;
+}
+
+.sector-name {
+    margin-right: 4px;
+    color: #495057;
+    font-weight: 500;
+}
+
+.sector-percentage {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Responsive */
+@media (max-width: 1199.98px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+        z-index: 1050;
+    }
+    
+    .admin-sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .admin-content {
+        margin-left: 0;
+    }
+    
+    .sidebar-toggle {
+        display: block;
+    }
+    
+    .search-box input {
+        width: 180px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .admin-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .page-title {
+        font-size: 1.25rem;
+    }
+    
+    .search-box {
+        display: none;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .stat-info h3 {
+        font-size: 1.25rem;
+    }
+    
+    .stat-info p {
+        font-size: 0.8125rem;
+    }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .admin-content {
+        background-color: #1a1a1a;
+    }
+    
+    .admin-header,
+    .card,
+    .stat-card {
+        background-color: #2d2d2d;
+        border-color: #3d3d3d;
+    }
+    
+    .page-title,
+    .card-title,
+    .stat-info h3,
+    .activity-content p,
+    .table,
+    .table th,
+    .table td {
+        color: #e0e0e0;
+    }
+    
+    .table {
+        --bs-table-bg: #2d2d2d;
+        --bs-table-striped-bg: #323232;
+        --bs-table-striped-color: #e0e0e0;
+        --bs-table-active-bg: #3d3d3d;
+        --bs-table-hover-bg: #3d3d3d;
+        color: #e0e0e0;
+        border-color: #3d3d3d;
+    }
+    
+    .table thead th {
+        background-color: #252525;
+        border-color: #3d3d3d;
+    }
+    
+    .table-hover > tbody > tr:hover > * {
+        --bs-table-accent-bg: #3d3d3d;
+    }
+    
+    .form-control,
+    .form-select,
+    .search-box input {
+        background-color: #252525;
+        border-color: #3d3d3d;
+        color: #e0e0e0;
+    }
+    
+    .form-control:focus,
+    .form-select:focus,
+    .search-box input:focus {
+        background-color: #252525;
+        border-color: var(--primary);
+        color: #e0e0e0;
+    }
+    
+    .dropdown-menu {
+        background-color: #2d2d2d;
+        border-color: #3d3d3d;
+    }
+    
+    .dropdown-item {
+        color: #e0e0e0;
+    }
+    
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: #3d3d3d;
+        color: #e0e0e0;
+    }
+    
+    .dropdown-divider {
+        border-color: #3d3d3d;
+    }
+    
+    .stat-item,
+    .activity-item {
+        background-color: #252525;
+        border-color: #3d3d3d;
+    }
+    
+    .stat-item:hover,
+    .activity-item:hover {
+        background-color: #323232;
+    }
+    
+    .sector-item {
+        background-color: #252525;
+    }
+    
+    .sector-name {
+        color: #e0e0e0;
+    }
+    
+    .sector-percentage {
+        color: #f8f9fa;
+    }
+    
+    .text-muted {
+        color: #a0a0a0 !important;
+    }
+    
+    .bg-light {
+        background-color: #252525 !important;
+    }
+    
+    .bg-white {
+        background-color: #2d2d2d !important;
+    }
+    
+    .text-dark {
+        color: #e0e0e0 !important;
+    }
+    
+    .border,
+    .border-top,
+    .border-end,
+    .border-bottom,
+    .border-start {
+        border-color: #3d3d3d !important;
+    }
+}
+</style>

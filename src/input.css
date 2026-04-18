@@ -1,0 +1,70 @@
+/* Tailwind base styles */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom base styles */
+@layer base {
+  html {
+    @apply antialiased text-gray-900;
+  }
+  
+  body {
+    @apply min-h-screen bg-white;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold leading-tight tracking-tight;
+  }
+  
+  h1 { @apply text-4xl md:text-5xl; }
+  h2 { @apply text-3xl md:text-4xl; }
+  h3 { @apply text-2xl md:text-3xl; }
+  h4 { @apply text-xl md:text-2xl; }
+  h5 { @apply text-lg md:text-xl; }
+  h6 { @apply text-base md:text-lg; }
+}
+
+/* Custom components */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  
+  .btn-primary {
+    @apply bg-royal-blue text-white hover:bg-opacity-90 focus:ring-royal-blue;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-gray-500;
+  }
+  
+  .btn-outline {
+    @apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-royal-blue;
+  }
+  
+  .container {
+    @apply px-4 mx-auto w-full sm:px-6 lg:px-8;
+  }
+  
+  .section {
+    @apply py-12 md:py-16 lg:py-24;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .scroll-mt-header {
+    scroll-margin-top: 5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .scroll-mt-header {
+      scroll-margin-top: 6rem;
+    }
+  }
+}

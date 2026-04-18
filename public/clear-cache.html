@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Service Workers</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            text-align: center;
+        }
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            margin: 20px 0; 
+            cursor: pointer;
+        }
+        #status { 
+            margin-top: 20px; 
+            padding: 10px; 
+            border-radius: 4px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Clear Service Workers & Caches</h1>
+    <p>Click the button below to unregister all service workers and clear caches.</p>
+    
+    <button id="clearBtn">Clear Service Workers & Caches</button>
+    
+    <div id="status"></div>
+
+    <script>
+        document.getElementById('clearBtn').addEventListener('click', async () => {
+            const statusEl = document.getElementById('status');
+            
+            try {
+                // Unregister all service workers
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (const registration of registrations) {
+                        await registration.unregister();
+                        logStatus(`Unregistered service worker: ${registration.scope}`);
+                    }
+                    
+                    if (registrations.length === 0) {
+                        logStatus('No service workers found.');
+                    }
+                } else {
+                    logStatus('Service workers are not supported in this browser.', 'error');
+                }
+
+                // Clear all caches
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    for (const cacheName of cacheNames) {
+                        await caches.delete(cacheName);
+                        logStatus(`Deleted cache: ${cacheName}`);
+                    }
+                    
+                    if (cacheNames.length === 0) {
+                        logStatus('No caches found.');
+                    }
+                } else {
+                    logStatus('Cache API not supported in this browser.', 'error');
+                }
+
+                logStatus('All done! Page will refresh in 3 seconds...', 'success');
+                
+                // Refresh the page after a delay
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 3000);
+                
+            } catch (error) {
+                logStatus(`Error: ${error.message}`, 'error');
+                console.error('Error clearing service workers:', error);
+            }
+        });
+
+        function logStatus(message, type = '') {
+            const statusEl = document.getElementById('status');
+            const p = document.createElement('p');
+            p.textContent = message;
+            if (type) {
+                p.className = type;
+            }
+            statusEl.appendChild(p);
+            console.log(message);
+        }
+    </script>
+</body>
+</html>

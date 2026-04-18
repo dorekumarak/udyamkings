@@ -1,0 +1,299 @@
+<%- include('partials/header', { title: 'Verify OTP | UdyamKings' }) %>
+
+<div class="auth-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <h2 class="mb-2">Verify Your Email</h2>
+                            <p class="text-muted">We've sent a 6-digit verification code to <span id="userEmail" class="fw-bold"><%= email || 'your email' %></span></p>
+                            <p class="small text-muted">Please check your inbox and enter the code below.</p>
+                        </div>
+
+                        <form id="otpForm" action="/auth/verify-otp" method="POST" class="needs-validation" novalidate>
+                            <input type="hidden" name="email" value="<%= email || '' %>">
+                            <input type="hidden" name="from" value="<%= from || '' %>">
+                            
+                            <div class="otp-inputs mb-4">
+                                <div class="row g-2 justify-content-center">
+                                    <% for(let i = 0; i < 6; i++) { %>
+                                        <div class="col-4 col-sm-2">
+                                            <input type="text" 
+                                                   class="form-control form-control-lg text-center otp-digit" 
+                                                   maxlength="1" 
+                                                   pattern="[0-9]"
+                                                   data-index="<%= i %>"
+                                                   required>
+                                        </div>
+                                    <% } %>
+                                    <input type="hidden" name="otp" id="otp">
+                                </div>
+                                <div class="invalid-feedback text-center mt-2">Please enter the 6-digit verification code.</div>
+                            </div>
+                            
+                            <div class="text-center mb-4">
+                                <button type="button" id="resendOtp" class="btn btn-link p-0">Resend OTP</button>
+                                <div id="resendTimer" class="small text-muted">Resend OTP in <span id="countdown">60</span>s</div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary py-2">
+                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    <span class="btn-text">Verify & Continue</span>
+                                </button>
+                                
+                                <button type="button" id="backToLogin" class="btn btn-outline-secondary mt-2">
+                                    <i class="fas fa-arrow-left me-1"></i> Back to Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const otpForm = document.getElementById('otpForm');
+    const otpInputs = document.querySelectorAll('.otp-digit');
+    const otpHiddenInput = document.getElementById('otp');
+    const resendOtpBtn = document.getElementById('resendOtp');
+    const resendTimer = document.getElementById('resendTimer');
+    const backToLoginBtn = document.getElementById('backToLogin');
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email') || '';
+    
+    let countdown;
+    let timeLeft = 60;
+    
+    // Start the countdown timer
+    startResendTimer();
+    
+    // Handle OTP input
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('input', function() {
+            // Allow only numbers
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            // Move to next input on number input
+            if (this.value.length === 1 && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            }
+            
+            // Update hidden input
+            updateOtpValue();
+        });
+        
+        // Handle backspace
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                otpInputs[index - 1].focus();
+            }
+        });
+    });
+    
+    // Update hidden OTP value
+    function updateOtpValue() {
+        let otp = '';
+        otpInputs.forEach(input => {
+            otp += input.value;
+        });
+        otpHiddenInput.value = otp;
+    }
+    
+    // Handle OTP form submission
+    otpForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!this.checkValidity()) {
+            e.stopPropagation();
+            this.classList.add('was-validated');
+            return;
+        }
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const spinner = submitBtn.querySelector('.spinner-border');
+        const btnText = submitBtn.querySelector('.btn-text');
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        spinner.classList.remove('d-none');
+        btnText.textContent = 'Verifying...';
+        
+        try {
+            const formData = new FormData(this);
+            
+            // API call to verify OTP
+            const response = await fetch('/auth/verify-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: formData.get('email'),
+                    otp: formData.get('otp'),
+                    from: formData.get('from')
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Redirect based on the source
+                const from = formData.get('from');
+                let redirectUrl = '/dashboard'; // Default redirect
+                
+                if (from === 'register') {
+                    // Redirect to complete profile or dashboard
+                    redirectUrl = '/onboarding';
+                }
+                
+                // Check for redirect URL in query params
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectParam = urlParams.get('redirect');
+                if (redirectParam) {
+                    redirectUrl = decodeURIComponent(redirectParam);
+                }
+                
+                window.location.href = redirectUrl;
+            } else {
+                showAlert('danger', data.message || 'Invalid verification code. Please try again.');
+                
+                // Clear OTP inputs on error
+                otpInputs.forEach(input => {
+                    input.value = '';
+                    input.classList.add('is-invalid');
+                });
+                otpInputs[0].focus();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert('danger', 'An error occurred. Please try again later.');
+        } finally {
+            // Reset button state
+            submitBtn.disabled = false;
+            spinner.classList.add('d-none');
+            btnText.textContent = 'Verify & Continue';
+        }
+    });
+    
+    // Handle resend OTP
+    resendOtpBtn.addEventListener('click', async function() {
+        if (!email) return;
+        
+        // Disable resend button and show loading
+        this.disabled = true;
+        const originalText = this.textContent;
+        this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+        
+        try {
+            // API call to resend OTP
+            const response = await fetch('/auth/resend-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Reset OTP inputs
+                otpInputs.forEach(input => {
+                    input.value = '';
+                    input.classList.remove('is-invalid');
+                });
+                otpInputs[0].focus();
+                updateOtpValue();
+                
+                // Reset and restart timer
+                clearInterval(countdown);
+                timeLeft = 60;
+                startResendTimer();
+                
+                showAlert('success', 'A new verification code has been sent to your email.');
+            } else {
+                showAlert('danger', data.message || 'Failed to resend verification code. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert('danger', 'An error occurred. Please try again later.');
+        } finally {
+            // Reset button state
+            this.disabled = false;
+            this.textContent = originalText;
+        }
+    });
+    
+    // Back to login
+    if (backToLoginBtn) {
+        backToLoginBtn.addEventListener('click', function() {
+            window.location.href = '/login';
+        });
+    }
+    
+    // Start resend OTP timer
+    function startResendTimer() {
+        if (resendOtpBtn) resendOtpBtn.style.display = 'none';
+        if (resendTimer) resendTimer.style.display = 'block';
+        if (document.getElementById('countdown')) {
+            document.getElementById('countdown').textContent = timeLeft;
+        }
+        
+        countdown = setInterval(() => {
+            timeLeft--;
+            if (document.getElementById('countdown')) {
+                document.getElementById('countdown').textContent = timeLeft;
+            }
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                if (resendOtpBtn) resendOtpBtn.style.display = 'inline';
+                if (resendTimer) resendTimer.style.display = 'none';
+                timeLeft = 60;
+            }
+        }, 1000);
+    }
+    
+    // Show alert message
+    function showAlert(type, message) {
+        // Remove any existing alerts
+        const existingAlerts = document.querySelectorAll('.alert');
+        existingAlerts.forEach(alert => alert.remove());
+        
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show mb-4`;
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        const cardBody = document.querySelector('.card-body');
+        cardBody.insertBefore(alertDiv, cardBody.firstChild);
+        
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alertDiv);
+            bsAlert.close();
+        }, 5000);
+    }
+    
+    // Show error/success messages from URL parameters
+    const status = urlParams.get('status');
+    const message = urlParams.get('message');
+    
+    if (status === 'success' && message) {
+        showAlert('success', decodeURIComponent(message));
+    } else if (status === 'error' && message) {
+        showAlert('danger', decodeURIComponent(message));
+    }
+});
+</script>

@@ -1,0 +1,646 @@
+<%- include('partials/header', { title: 'My Profile | UdyamKings' }) %>
+
+<div class="profile-container">
+    <div class="row g-4">
+        <!-- Sidebar -->
+        <div class="col-lg-3
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <div class="profile-picture-container mb-3">
+                        <img src="/images/default-avatar.png" alt="Profile Picture" class="rounded-circle" id="profilePicture" width="150" height="150">
+                        <div class="profile-upload-overlay">
+                            <i class="fas fa-camera"></i>
+                            <input type="file" id="profilePictureUpload" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <h5 class="mb-1"><%= user.name || 'User Name' %></h5>
+                    <p class="text-muted mb-3"><%= user.type === 'investor' ? 'Investor' : 'Entrepreneur' %></p>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-share-alt me-2"></i>Share Profile
+                        </button>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="profile-completion mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Profile Completion</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span><i class="fas fa-file-alt text-primary me-2"></i>Applications</span>
+                            <span class="fw-bold">5</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2 border-bottom">
+                            <span><i class="fas fa-star text-warning me-2"></i>Investments</span>
+                            <span class="fw-bold">3</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-2">
+                            <span><i class="fas fa-calendar-check text-success me-2"></i>Member Since</span>
+                            <span class="fw-bold">2023</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <!-- Personal Information Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Personal Information</h5>
+                    <button class="btn btn-sm btn-outline-primary" id="editPersonalInfo">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form id="personalInfoForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" value="<%= user.firstName || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" value="<%= user.lastName || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" value="<%= user.email || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" value="<%= user.phone || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" value="<%= user.dob || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Gender</label>
+                                <select class="form-select" disabled>
+                                    <option <%= !user.gender ? 'selected' : '' %> disabled>Select Gender</option>
+                                    <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+                                    <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+                                    <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">About Me</label>
+                                <textarea class="form-control" rows="3" disabled><%= user.about || '' %></textarea>
+                            </div>
+                            <div class="d-none" id="personalInfoActions">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" id="cancelPersonalInfo">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Address Information Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Address Information</h5>
+                    <button class="btn btn-sm btn-outline-primary" id="editAddressInfo">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form id="addressInfoForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Address Line 1</label>
+                                <input type="text" class="form-control" value="<%= user.address?.line1 || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Address Line 2</label>
+                                <input type="text" class="form-control" value="<%= user.address?.line2 || '' %>" disabled>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" value="<%= user.address?.city || '' %>" disabled>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control" value="<%= user.address?.state || '' %>" disabled>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" value="<%= user.address?.postalCode || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Country</label>
+                                <select class="form-select" disabled>
+                                    <option value="">Select Country</option>
+                                    <option value="India" <%= user.address?.country === 'India' ? 'selected' : '' %>>India</option>
+                                    <!-- Add more countries as needed -->
+                                </select>
+                            </div>
+                            <div class="d-none" id="addressInfoActions">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" id="cancelAddressInfo">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Professional Information Card (Conditional based on user type) -->
+            <% if (user.type === 'investor') { %>
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Investment Profile</h5>
+                    <button class="btn btn-sm btn-outline-primary" id="editInvestorProfile">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form id="investorProfileForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Company Name</label>
+                                <input type="text" class="form-control" value="<%= user.company || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Job Title</label>
+                                <input type="text" class="form-control" value="<%= user.jobTitle || '' %>" disabled>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Investment Interests</label>
+                                <select class="form-select" multiple disabled>
+                                    <option value="technology" <%= user.interests?.includes('technology') ? 'selected' : '' %>>Technology</option>
+                                    <option value="healthcare" <%= user.interests?.includes('healthcare') ? 'selected' : '' %>>Healthcare</option>
+                                    <option value="education" <%= user.interests?.includes('education') ? 'selected' : '' %>>Education</option>
+                                    <option value="finance" <%= user.interests?.includes('finance') ? 'selected' : '' %>>Finance</option>
+                                    <option value="retail" <%= user.interests?.includes('retail') ? 'selected' : '' %>>Retail</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Investment Range (₹)</label>
+                                <select class="form-select" disabled>
+                                    <option value="">Select Range</option>
+                                    <option value="1-5L" <%= user.investmentRange === '1-5L' ? 'selected' : '' %>>₹1L - ₹5L</option>
+                                    <option value="5-25L" <%= user.investmentRange === '5-25L' ? 'selected' : '' %>>₹5L - ₹25L</option>
+                                    <option value="25-50L" <%= user.investmentRange === '25-50L' ? 'selected' : '' %>>₹25L - ₹50L</option>
+                                    <option value="50L-1C" <%= user.investmentRange === '50L-1C' ? 'selected' : '' %>>₹50L - ₹1Cr</option>
+                                    <option value="1C+" <%= user.investmentRange === '1C+' ? 'selected' : '' %>>₹1Cr+</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Years of Investment Experience</label>
+                                <input type="number" class="form-control" value="<%= user.experienceYears || '' %>" min="0" disabled>
+                            </div>
+                            <div class="d-none" id="investorProfileActions">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" id="cancelInvestorProfile">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <% } else { %>
+            <!-- Entrepreneur Profile -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Business Profile</h5>
+                    <button class="btn btn-sm btn-outline-primary" id="editBusinessProfile">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form id="businessProfileForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Business Name</label>
+                                <input type="text" class="form-control" value="<%= user.businessName || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Business Type</label>
+                                <select class="form-select" disabled>
+                                    <option value="">Select Business Type</option>
+                                    <option value="startup" <%= user.businessType === 'startup' ? 'selected' : '' %>>Startup</option>
+                                    <option value="sme" <%= user.businessType === 'sme' ? 'selected' : '' %>>SME</option>
+                                    <option value="msme" <%= user.businessType === 'msme' ? 'selected' : '' %>>MSME</option>
+                                    <option value="other" <%= user.businessType === 'other' ? 'selected' : '' %>>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Business Description</label>
+                                <textarea class="form-control" rows="3" disabled><%= user.businessDescription || '' %></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Industry</label>
+                                <select class="form-select" disabled>
+                                    <option value="">Select Industry</option>
+                                    <option value="technology" <%= user.industry === 'technology' ? 'selected' : '' %>>Technology</option>
+                                    <option value="healthcare" <%= user.industry === 'healthcare' ? 'selected' : '' %>>Healthcare</option>
+                                    <option value="education" <%= user.industry === 'education' ? 'selected' : '' %>>Education</option>
+                                    <option value="retail" <%= user.industry === 'retail' ? 'selected' : '' %>>Retail</option>
+                                    <option value="manufacturing" <%= user.industry === 'manufacturing' ? 'selected' : '' %>>Manufacturing</option>
+                                    <option value="agriculture" <%= user.industry === 'agriculture' ? 'selected' : '' %>>Agriculture</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Website</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">https://</span>
+                                    <input type="text" class="form-control" value="<%= user.website ? user.website.replace('https://', '') : '' %>" placeholder="yourwebsite.com" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Business Registration Number</label>
+                                <input type="text" class="form-control" value="<%= user.registrationNumber || '' %>" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Year Established</label>
+                                <input type="number" class="form-control" value="<%= user.yearEstablished || '' %>" min="1900" max="<%= new Date().getFullYear() %>" disabled>
+                            </div>
+                            <div class="d-none" id="businessProfileActions">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" id="cancelBusinessProfile">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+            
+            <!-- Social Media Links -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Social Media</h5>
+                    <button class="btn btn-sm btn-outline-primary" id="editSocialMedia">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form id="socialMediaForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fab fa-linkedin text-primary"></i></span>
+                                    <input type="text" class="form-control" placeholder="LinkedIn Profile" value="<%= user.social?.linkedin || '' %>" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fab fa-twitter text-info"></i></span>
+                                    <input type="text" class="form-control" placeholder="Twitter Profile" value="<%= user.social?.twitter || '' %>" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fab fa-facebook text-primary"></i></span>
+                                    <input type="text" class="form-control" placeholder="Facebook Profile" value="<%= user.social?.facebook || '' %>" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fab fa-instagram text-danger"></i></span>
+                                    <input type="text" class="form-control" placeholder="Instagram Profile" value="<%= user.social?.instagram || '' %>" disabled>
+                                </div>
+                            </div>
+                            <div class="d-none" id="socialMediaActions">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary" id="cancelSocialMedia">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Change Password -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Change Password</h5>
+                </div>
+                <div class="card-body">
+                    <form id="changePasswordForm">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Current Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="currentPassword" required>
+                                    <button class="btn btn-outline-secondary toggle-password" type="button">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">New Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="newPassword" required>
+                                    <button class="btn btn-outline-secondary toggle-password" type="button">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">At least 8 characters, 1 uppercase, 1 number</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Confirm New Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="confirmPassword" required>
+                                    <button class="btn btn-outline-secondary toggle-password" type="button">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="signOutAllDevices">
+                                    <label class="form-check-label" for="signOutAllDevices">
+                                        Sign out from all devices after password change
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Update Password</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-container {
+    padding: 2rem 0;
+}
+
+.profile-picture-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.profile-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.profile-picture-container:hover .profile-upload-overlay {
+    opacity: 1;
+}
+
+.profile-stats {
+    text-align: left;
+    margin-top: 1.5rem;
+}
+
+.profile-completion {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .profile-container {
+        padding: 1rem 0;
+    }
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    .card, .form-control, .form-select, .input-group-text {
+        background-color: #2d2d2d;
+        border-color: #3d3d3d;
+        color: #e0e0e0;
+    }
+    
+    .card-header {
+        background-color: #252525 !important;
+        border-bottom-color: #3d3d3d;
+    }
+    
+    .form-control:disabled, .form-select:disabled {
+        background-color: #252525;
+        color: #a0a0a0;
+    }
+    
+    .profile-completion {
+        background-color: #252525;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+    
+    // Handle profile picture upload
+    const profilePictureUpload = document.getElementById('profilePictureUpload');
+    const profilePicture = document.getElementById('profilePicture');
+    
+    if (profilePictureUpload) {
+        profilePictureUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    profilePicture.src = event.target.result;
+                    // Here you would typically upload the image to your server
+                    // and update the user's profile picture URL in the database
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    // Enable/disable form fields and show/hide save/cancel buttons
+    function setupFormEdit(editButtonId, formId, cancelButtonId, fieldsSelector, actionsId) {
+        const editButton = document.getElementById(editButtonId);
+        if (!editButton) return;
+        
+        const form = document.getElementById(formId);
+        const cancelButton = document.getElementById(cancelButtonId);
+        const fields = form ? form.querySelectorAll(fieldsSelector) : [];
+        const actions = document.getElementById(actionsId);
+        
+        if (!form || !cancelButton || !actions) return;
+        
+        // Store original values to revert on cancel
+        let originalValues = {};
+        
+        editButton.addEventListener('click', function() {
+            // Store original values
+            fields.forEach(field => {
+                if (field.tagName === 'SELECT' && field.multiple) {
+                    // Handle multi-select
+                    originalValues[field.id] = Array.from(field.selectedOptions).map(option => option.value);
+                } else {
+                    originalValues[field.id || field.name] = field.value;
+                }
+                field.disabled = false;
+            });
+            
+            // Show save/cancel buttons
+            actions.classList.remove('d-none');
+            editButton.classList.add('d-none');
+        });
+        
+        cancelButton.addEventListener('click', function() {
+            // Revert to original values
+            fields.forEach(field => {
+                if (field.tagName === 'SELECT' && field.multiple) {
+                    // Handle multi-select
+                    Array.from(field.options).forEach(option => {
+                        option.selected = originalValues[field.id]?.includes(option.value);
+                    });
+                } else {
+                    field.value = originalValues[field.id || field.name] || '';
+                }
+                field.disabled = true;
+            });
+            
+            // Hide save/cancel buttons
+            actions.classList.add('d-none');
+            editButton.classList.remove('d-none');
+        });
+        
+        // Handle form submission
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Here you would typically make an AJAX call to update the user's information
+                // For now, we'll just disable the fields and hide the save/cancel buttons
+                fields.forEach(field => {
+                    field.disabled = true;
+                });
+                
+                actions.classList.add('d-none');
+                editButton.classList.remove('d-none');
+                
+                // Show success message
+                showAlert('Profile updated successfully!', 'success');
+            });
+        }
+    }
+    
+    // Set up form edit functionality for each section
+    setupFormEdit('editPersonalInfo', 'personalInfoForm', 'cancelPersonalInfo', 'input, select, textarea', 'personalInfoActions');
+    setupFormEdit('editAddressInfo', 'addressInfoForm', 'cancelAddressInfo', 'input, select', 'addressInfoActions');
+    
+    // Only set up the appropriate profile type form
+    <% if (user.type === 'investor') { %>
+    setupFormEdit('editInvestorProfile', 'investorProfileForm', 'cancelInvestorProfile', 'input, select, textarea', 'investorProfileActions');
+    <% } else { %>
+    setupFormEdit('editBusinessProfile', 'businessProfileForm', 'cancelBusinessProfile', 'input, select, textarea', 'businessProfileActions');
+    <% } %>
+    
+    setupFormEdit('editSocialMedia', 'socialMediaForm', 'cancelSocialMedia', 'input', 'socialMediaActions');
+    
+    // Handle change password form submission
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Simple validation
+            if (newPassword !== confirmPassword) {
+                showAlert('New passwords do not match!', 'danger');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                showAlert('Password must be at least 8 characters long!', 'danger');
+                return;
+            }
+            
+            // Here you would typically make an AJAX call to change the password
+            // For now, we'll just show a success message
+            showAlert('Password changed successfully!', 'success');
+            changePasswordForm.reset();
+        });
+    }
+    
+    // Helper function to show alerts
+    function showAlert(message, type) {
+        // Remove any existing alerts
+        const existingAlert = document.querySelector('.alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+        
+        // Create alert element
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        // Add alert to the top of the content
+        const content = document.querySelector('.profile-container');
+        if (content) {
+            content.insertBefore(alertDiv, content.firstChild);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 150);
+            }, 5000);
+        }
+    }
+});
+
+</script>
+
+<%- include('partials/footer') %>
